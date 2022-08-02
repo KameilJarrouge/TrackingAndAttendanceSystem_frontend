@@ -17,6 +17,7 @@ import SubjectTakenModalAdd from "../Modals/SubjectTakenModalAdd";
 import SubjectTakenModalEdit from "../Modals/SubjectTakenModalEdit";
 import StudentTakenModalAdd from "../Modals/StudentTakenModalAdd";
 import StudentTakenModalEdit from "../Modals/StudentTakenModalEdit";
+import LatestSemester from "../components/LatestSemester";
 
 function SubjectStudentsPage() {
   let user = getUser();
@@ -74,7 +75,7 @@ function SubjectStudentsPage() {
           <PageHeader
             title={
               <div className="w-full h-full mx-4 flex items-center justify-center">
-                <div className="w-full h-full flex  items-center justify-center text-2xl font-bold text-font">
+                <div className="w-full h-full flex  items-center justify-center text-xl font-bold text-font">
                   <span className="ml-2">{" طلاب المقرر: "}</span>
                   <span>{subject.name}</span>
                 </div>
@@ -87,6 +88,7 @@ function SubjectStudentsPage() {
                 onClick={() => setmodalIsOpen(true)}
               ></AiOutlinePlus>
             }
+            left={<LatestSemester refresh={refresh} />}
           ></PageHeader>
         </div>
 

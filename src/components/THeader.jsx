@@ -1,9 +1,10 @@
 import React from "react";
 
-function THeader({ children, width = "auto" }) {
+function THeader({ children, width = "auto", ...props }) {
   return (
     <th
-      className={`text-2xl border-collapse border-[1px] border-primary w-${width} bg-primary text-font `}
+      {...props}
+      className={`text-xl border-collapse border-[1px] border-primary w-${width} bg-primary text-font `}
     >
       {children}
     </th>

@@ -17,7 +17,9 @@ function CamScheduleModalAdd({ open, onClose, refresh, camId }) {
   const handlesubmit = async (values) => {
     if (
       moment(values.start).format("HH:mm:ss") ===
-      moment(values.end).format("HH:mm:ss")
+        moment(values.end).format("HH:mm:ss") ||
+      moment(values.start).format("HH:mm:ss") >
+        moment(values.end).format("HH:mm:ss")
     ) {
       toast.error("لا يوجد فترة زمنية بين هذه الأوقات");
       return;
@@ -89,6 +91,7 @@ function CamScheduleModalAdd({ open, onClose, refresh, camId }) {
                   }
                   name={"day"}
                   options={[
+                    { name: "جميع الأيام", value: -1 },
                     { name: "الأحد", value: 0 },
                     { name: "الاثنين", value: 1 },
                     { name: "الثلاثاء", value: 2 },

@@ -9,6 +9,7 @@ import api from "../api/api";
 import { toast } from "react-toastify";
 import AppFormDatePicker from "../components/form/AppFormDatePicker";
 import moment from "moment";
+import { getUser, setUser } from "../api/user";
 const validationSchema = Yup.object().shape({
   name_identifier: Yup.string().required("الحقل إجباري"),
   year: Yup.string().required("الحقل إجباري"),
@@ -36,6 +37,7 @@ function SemesterModalEdit({ open, onClose, refresh, id, setId = (f) => f }) {
       semester_start: moment(values?.semester_start).format("yyyy-MM-DD"),
       number_of_weeks: values?.number_of_weeks,
     });
+
     if (res.data.status === "ok") {
       toast.success(res.data.message);
       onClose();
@@ -83,13 +85,16 @@ function SemesterModalEdit({ open, onClose, refresh, id, setId = (f) => f }) {
                 type="text"
                 placeholder=""
               ></AppFormField>
-              <AppFormDatePicker
-                title="بداية الفصل"
-                name={"semester_start"}
-                type="text"
-                placeholder=""
-              ></AppFormDatePicker>
+              <div className="w-full mb-[1.5rem]">
+                <AppFormDatePicker
+                  title="بداية الفصل"
+                  name={"semester_start"}
+                  type="text"
+                  placeholder=""
+                ></AppFormDatePicker>
+              </div>
               <AppFormField
+                disabled
                 title="عدد الأسابيع"
                 name={"number_of_weeks"}
                 type="text"

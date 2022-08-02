@@ -74,7 +74,7 @@ function StudentTakenModalAdd({ open, onClose, refresh, subjectId }) {
       theory_id: selectedTheory?.id || null,
       practical_id: selectedPractical?.id || null,
     });
-
+    console.log(res.data);
     if (res.data.status === "ok") {
       toast.success(res.data.message);
 

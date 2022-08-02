@@ -41,6 +41,7 @@ function ProfessorGivenModalEdit({
     console.log(res.data);
     console.log("====================================");
     setSelectedProfessor(res.data);
+    setSelectedCamera(res.data.cam);
   };
 
   useEffect(() => {
@@ -225,11 +226,25 @@ function ProfessorGivenModalEdit({
                 ></ModalHeader>
               </div>
 
-              <div className="mt-3 flex flex-row-reverse justify-between">
-                <div className="w-[32%]">
+              <div className="mt-3 w-full flex flex-row-reverse items-center justify-between  ">
+                {/* <div className="bg-red-100 w-[33%]">
+                  {" "}
                   <AppFormField
-                    infoWidth="3/4"
-                    inputWidth="1/4"
+                    infoWidth="3/5"
+                    inputWidth="2/5"
+                    name={"attendance_pre"}
+                    title="قبل البداية"
+                    tooltipMessage="بدء تسجيل الحضور قبل البدء الرسمي للمحاضرة"
+                    tooltipVisiable
+                  />
+                </div>
+                <div className="bg-blue-100 w-[30%]"> 1 </div>
+                <div className="bg-green-100 w-[30%]"> 1 </div> */}
+
+                <div className=" w-[32%]">
+                  <AppFormField
+                    infoWidth="3/5"
+                    inputWidth="2/5"
                     name={"attendance_pre"}
                     title="قبل البداية"
                     tooltipMessage="بدء تسجيل الحضور قبل البدء الرسمي للمحاضرة"
@@ -240,19 +255,18 @@ function ProfessorGivenModalEdit({
                   <AppFormField
                     tooltipMessage="مدة تسجيل الحضور بعد البدء الرسمي للمحاضرة"
                     tooltipVisiable
-                    infoWidth="3/4"
-                    inputWidth="1/4"
+                    infoWidth="3/5"
+                    inputWidth="2/5"
                     name={"attendance_post"}
                     title="النهاية"
                   />
                 </div>
-
                 <div className="w-[32%]">
                   <AppFormField
                     tooltipMessage="مدة تسجيل تواجد الطلاب بعد الانتهاء من تسجيل الحضور"
                     tooltipVisiable
-                    infoWidth="3/4"
-                    inputWidth="1/4"
+                    infoWidth="3/5"
+                    inputWidth="2/5"
                     name={"attendance_present"}
                     title="بعد النهاية"
                   />

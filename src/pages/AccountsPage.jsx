@@ -20,22 +20,24 @@ import { getCamTypeAsString } from "../components/form/getCamTypeAsString";
 import CameraModalAdd from "../Modals/CameraModalAdd";
 import CameraModalEdit from "../Modals/CameraModalEdit";
 import { TiDocumentText } from "react-icons/ti";
+import AccountModalAdd from "../Modals/AccountModalAdd";
+import AccountModalEdit from "../Modals/AccountModalEdit";
 
-function CamerasPage() {
+function AccountsPage() {
   let user = getUser();
   let navigate = useNavigate();
-  const [dataUrl, setDataUrl] = useState(`/api/cameras?identifier=&type=-1`);
+  const [dataUrl, setDataUrl] = useState(`/api/users?username=&isAdmin=-1`);
   const [modalIsOpen, setmodalIsOpen] = useState(false);
   const [editModalIsOpen, setEditModalIsOpen] = useState(false);
   const [selectedId, setSelectedId] = useState(0);
   const [invoke, setInvoke] = useState(false);
-  const [cameras, setCameras] = useState([]);
+  const [users, setUsers] = useState([]);
 
-  const getCameras = (values) => {
+  const getUsers = (values) => {
     setDataUrl(
-      `/api/cameras?identifier=${
-        values.identifier === null ? "" : values.identifier
-      }&type=${values.type}`
+      `/api/users?username=${
+        values.username === null ? "" : values.username
+      }&isAdmin=${values.isAdmin}`
     );
   };
 
@@ -48,44 +50,39 @@ function CamerasPage() {
     setEditModalIsOpen(true);
   };
 
-  const handleLogNavigation = (id) => {
-    navigate(`/camera/${id}/log`);
-  };
-  const handleScheduleNavigation = (id) => {
-    navigate(`/camera/${id}/schedule`);
-  };
-
   const handleDelete = async (id) => {
-    let res = await api.delete(`/api/cameras/${id}/delete`);
+    let res = await api.delete(`/api/users/${id}/delete`);
     if (res.data.status === "ok") {
       toast.success(res.data.message);
       refresh();
+    } else {
+      toast.error(res.data.message);
     }
   };
 
   return (
     <div className="py-6 px-14 h-[90vh] bg-background flex flex-col ">
-      <CameraModalAdd
+      <AccountModalAdd
         open={modalIsOpen}
         onClose={() => setmodalIsOpen(false)}
         refresh={refresh}
-      ></CameraModalAdd>
-      <CameraModalEdit
+      ></AccountModalAdd>
+      <AccountModalEdit
         open={editModalIsOpen}
         onClose={() => setEditModalIsOpen(false)}
         refresh={refresh}
-        camId={selectedId}
-      ></CameraModalEdit>
+        userId={selectedId}
+      ></AccountModalEdit>
       <div className="w-full h-[88%] flex flex-col ">
         <div className="w-full h-1/6 bg-black mb-2">
           <PageHeaderWSearch
             left={
               <AppForm
                 initialValues={{
-                  type: -1,
-                  identifier: "",
+                  isAdmin: -1,
+                  username: "",
                 }}
-                onSubmit={getCameras}
+                onSubmit={getUsers}
                 // validationSchema={validationSchema}
               >
                 <div className="w-full h-full mx-4 flex items-center justify-between">
@@ -93,26 +90,22 @@ function CamerasPage() {
                     <div className="w-[30%] h-full flex items-center">
                       <div className="w-[90%] h-full">
                         <AppFormFieldHeader
-                          name={"identifier"}
-                          placeholder="موقع الكاميرا"
+                          name={"username"}
+                          placeholder="اسم المستخدم"
                         ></AppFormFieldHeader>
                       </div>
                     </div>
 
                     <div className="w-fit h-full flex items-center justify-start">
                       <span className="text-font text-xl font-bold mx-2 w-fit">
-                        نوع الموقع:
+                        نوع المستخدم:
                       </span>
                       <div className="w-fit">
                         <AppFormRadioButton
-                          border
-                          name={"type"}
+                          name={"isAdmin"}
                           buttons={[
-                            { name: "قاعة", value: 0 },
-                            { name: "مدخل", value: 1 },
-                            { name: "مخرج", value: 2 },
-                            { name: "مدخل أو مخرج", value: 4 },
-                            { name: "حرم", value: 3 },
+                            { name: "أدمن", value: 1 },
+                            { name: "مدرس", value: 0 },
                           ]}
                         ></AppFormRadioButton>
                       </div>
@@ -138,42 +131,27 @@ function CamerasPage() {
         <table className="w-full table-fixed ">
           <thead className="w-full">
             <tr className="w-full">
-              <THeader width={"1/6"}>رابط الكاميرا </THeader>
-              <THeader width={"2/6"}> موقع الكاميرا</THeader>
-              <THeader width={"1/6"}> نوع الموقع</THeader>
-              <THeader width={"1/6"}> روابط</THeader>
+              <THeader width={"2/6"}>اسم المستخدم</THeader>
+              <THeader width={"1/6"}> نوع المستخدم</THeader>
               {/* السجل والمقررات بالروابط */}
               <THeader width={"1/6"}> تحكم</THeader>
             </tr>
           </thead>
           <tbody>
-            {cameras.map((cam) => (
-              <tr key={cam.id}>
-                <TCell>{cam.cam_url}</TCell>
-                <TCell>{cam.location}</TCell>
-                <TCell>{getCamTypeAsString(cam.type)}</TCell>
-                <TCell>
-                  {/* links */}
-                  <div className="flex justify-around text-xl text-primary ">
-                    <TiDocumentText
-                      onClick={() => handleLogNavigation(cam.id)}
-                      className="hover:text-green-500 transition-all cursor-pointer"
-                    ></TiDocumentText>
-                    <MdSchedule
-                      onClick={() => handleScheduleNavigation(cam.id)}
-                      className="hover:text-green-500 transition-all cursor-pointer"
-                    ></MdSchedule>
-                  </div>
-                </TCell>
+            {users.map((user) => (
+              <tr key={user.id}>
+                <TCell>{user.username}</TCell>
+                <TCell>{user.isAdmin ? "أدمن" : "مدرس"}</TCell>
+
                 {/* control */}
                 <TCell>
                   <div className="flex justify-around text-xl text-primary ">
                     <BiEdit
-                      onClick={() => handleOpenEditModal(cam.id)}
+                      onClick={() => handleOpenEditModal(user.id)}
                       className="hover:text-green-500 transition-all cursor-pointer"
                     ></BiEdit>
                     <MdDelete
-                      onClick={() => handleDelete(cam.id)}
+                      onClick={() => handleDelete(user.id)}
                       className="hover:text-red-500 transition-all cursor-pointer"
                     ></MdDelete>
                   </div>
@@ -187,7 +165,7 @@ function CamerasPage() {
         <div className="w-1/6 ">
           <Pagination
             dataUrl={dataUrl}
-            setData={setCameras}
+            setData={setUsers}
             invoke={invoke}
           ></Pagination>
         </div>
@@ -196,4 +174,4 @@ function CamerasPage() {
   );
 }
 
-export default CamerasPage;
+export default AccountsPage;

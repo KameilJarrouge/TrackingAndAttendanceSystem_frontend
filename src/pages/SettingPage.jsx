@@ -10,6 +10,7 @@ import AppFormCheckBox from "../components/form/AppFormCheckBox";
 import ResetButton from "../components/form/ResetButton";
 import api from "../api/api";
 import { toast } from "react-toastify";
+import moment from "moment";
 const validationSchemaSms = Yup.object().shape({
   sms_number: Yup.string()
     .matches("^09\\d{8}$", "يرجى إدخال رقم من نمط --------09 ")
@@ -72,18 +73,30 @@ function SettingPage() {
         {/* ==================================Current Semester================================== */}
         <SettingBox title={"الفصل الحالي"}>
           <div className="w-11/12 h-full mt-2">
-            <div className="h-5/6 flex flex-col justify-evenly">
+            <div className="h-5/6 flex flex-col justify-start">
               <PrimaryInfo
-                text={`اسم الفصل: ${currentSemester?.name_identifier || ""}`}
+                text={`اسم الفصل `}
+                data={currentSemester?.name_identifier || ""}
               ></PrimaryInfo>
               <PrimaryInfo
-                text={`العام الدراسي: ${currentSemester?.year || ""}`}
+                text={`العام الدراسي `}
+                data={currentSemester?.year || ""}
               ></PrimaryInfo>
               <PrimaryInfo
-                text={`بداية الفصل: ${currentSemester?.semester_start || ""}`}
+                text={`بداية الفصل `}
+                data={
+                  moment(currentSemester?.semester_start || "").format(
+                    "yyyy-MM-DD"
+                  ) !== "Invalid date"
+                    ? moment(currentSemester?.semester_start || "").format(
+                        "yyyy-MM-DD"
+                      )
+                    : ""
+                }
               ></PrimaryInfo>
               <PrimaryInfo
-                text={`عدد الأسابيع: ${currentSemester?.number_of_weeks || ""}`}
+                text={`عدد الأسابيع `}
+                data={currentSemester?.number_of_weeks || ""}
               ></PrimaryInfo>
             </div>
             <div className="w-full h-0.5 bg-primary"></div>
@@ -93,7 +106,7 @@ function SettingPage() {
           </div>
         </SettingBox>
         {/* ==================================Threshold================================== */}
-        <SettingBox title={"حدود الحرمانات"} subTitle="[عدد الغيابات]">
+        <SettingBox title={"حدود الحرمانات"} subTitle="عدد الغيابات">
           <AppForm
             validationSchema={validationSchemaThreshold}
             initialValues={{
@@ -104,8 +117,12 @@ function SettingPage() {
           >
             <div className="w-11/12 h-full mt-2">
               <div className="h-5/6 flex flex-col justify-start">
-                <AppFormField name={"warning_thresh"} title="حد الإنذار" />
-                <AppFormField name={"suspension_thresh"} title="حد الفصل" />
+                <div className="my-2">
+                  <AppFormField name={"warning_thresh"} title="حد الإنذار" />
+                </div>
+                <div className="my-2">
+                  <AppFormField name={"suspension_thresh"} title="حد الفصل" />
+                </div>
               </div>
               <div className="w-full h-0.5 bg-primary"></div>
 
@@ -119,7 +136,7 @@ function SettingPage() {
           </AppForm>
         </SettingBox>
         {/* ==================================Attendance================================== */}
-        <SettingBox title={"مواعيد تسجيل الحضور"} subTitle="[مقدرة بالدقيقة]">
+        <SettingBox title={"مواعيد تسجيل الحضور"} subTitle="مقدرة بالدقيقة">
           <AppForm
             validationSchema={validationSchemaAttendance}
             initialValues={{
@@ -131,9 +148,30 @@ function SettingPage() {
           >
             <div className="w-11/12 h-full mt-2">
               <div className="h-5/6 flex flex-col justify-start">
-                <AppFormField name={"attendance_pre"} title="قبل البداية" />
-                <AppFormField name={"attendance_post"} title="بعد البداية" />
-                <AppFormField name={"attendance_present"} title="بعد النهاية" />
+                <div className="my-2">
+                  <AppFormField
+                    tooltipMessage="بدء تسجيل الحضور قبل البدء الرسمي للمحاضرة"
+                    tooltipVisiable
+                    name={"attendance_pre"}
+                    title="قبل البداية"
+                  />
+                </div>
+                <div className="my-2">
+                  <AppFormField
+                    tooltipMessage="مدة تسجيل الحضور بعد البدء الرسمي للمحاضرة"
+                    tooltipVisiable
+                    name={"attendance_post"}
+                    title="النهاية"
+                  />
+                </div>
+                <div className="my-2">
+                  <AppFormField
+                    tooltipMessage="مدة تسجيل تواجد الطلاب بعد الانتهاء من تسجيل الحضور"
+                    tooltipVisiable
+                    name={"attendance_present"}
+                    title="بعد النهاية"
+                  />{" "}
+                </div>
               </div>
               <div className="w-full h-0.5 bg-primary"></div>
 
@@ -158,11 +196,15 @@ function SettingPage() {
           >
             <div className="w-11/12 h-full mt-2 ">
               <div className="h-5/6 flex flex-col justify-start items-center">
-                <AppFormField name={"sms_number"} title="الرقم" />
-                <AppFormCheckBox
-                  name={"should_send_sms"}
-                  title="إرسال رسالة إنذار"
-                />
+                <div className="my-2">
+                  <AppFormField name={"sms_number"} title="الرقم" />
+                </div>
+                <div className="my-2 h-full w-full">
+                  <AppFormCheckBox
+                    name={"should_send_sms"}
+                    title="إرسال رسالة إنذار"
+                  />
+                </div>
               </div>
               <div className="w-full h-0.5 bg-primary"></div>
 

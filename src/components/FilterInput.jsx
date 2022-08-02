@@ -1,8 +1,12 @@
 import React, { useEffect, useRef, useState } from "react";
 
-function FilterInput({ filterUpdateFunc = (f) => f }) {
+function FilterInput({ filterUpdateFunc = (f) => f, placeholder = "" }) {
   const [filterValue, setfilterValue] = useState("");
   const filter = useRef("");
+
+  const handleSetValue = (value) => {
+    setfilterValue(value.replace("\\", ""));
+  };
   useEffect(() => {
     filterUpdateFunc(filterValue);
   }, [filterValue]);
@@ -12,13 +16,13 @@ function FilterInput({ filterUpdateFunc = (f) => f }) {
       <input
         ref={filter}
         type="text"
-        placeholder="فلتر"
+        placeholder={placeholder}
         value={filterValue}
         onChange={(e) => {
-          setfilterValue(e.target.value);
+          handleSetValue(e.target.value);
         }}
         dir="rtl"
-        className="pr-2 text-primary bg-background_input border-[0.2px] border-primary text-xl"
+        className="pr-2 text-primary bg-background_input border-[0.2px] border-primary text-lg"
       />
     </div>
   );

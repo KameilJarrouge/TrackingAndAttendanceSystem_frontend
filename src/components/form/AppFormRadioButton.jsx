@@ -1,11 +1,13 @@
 import { useFormikContext } from "formik";
 import React from "react";
+import { TbMinusVertical } from "react-icons/tb";
 
 function AppFormRadioButton({
   editable = true,
   forced = false,
   fillBackground = false,
   border = false,
+  minWidth = "",
   name,
   buttons = [
     { name: "test", value: 1 },
@@ -36,7 +38,7 @@ function AppFormRadioButton({
           <div
             key={button.value}
             onClick={() => handleClick(button.value)}
-            className={`w-fit text-center mx-1 px-2 select-none
+            className={`${minWidth} w-fit text-center mx-1 px-2 select-none
            text-xl font-semibold  transition-all
            cursor-pointer rounded-md  ${
              values[name] === button.value ? "text-accent " : "text-font "
@@ -48,6 +50,7 @@ function AppFormRadioButton({
             <div className="w-0.5 h-1/3 bg-font text-xs text-font text-center">
               '
             </div>
+            // <TbMinusVertical className="text-font"></TbMinusVertical>
           )}
         </>
       ))}

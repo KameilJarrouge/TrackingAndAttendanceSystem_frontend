@@ -1,14 +1,16 @@
 import React from "react";
+import { Tooltip } from "../Modals/Tooltip";
 import TitleHeader from "./TitleHeader";
 function SettingBox({ title, subTitle = null, children }) {
   return (
     <div className="w-[24%] h-full flex flex-col ">
       {/* title */}
-      <div className="h-1/5">
+      <div className="h-1/6">
         <TitleHeader>
-          <div className="w-full h-full flex flex-col justify-center items-center">
-            <div>{title}</div>
-            <div>{subTitle}</div>
+          <div className="w-full h-full flex flex-col justify-center items-center text-xl">
+            <Tooltip message={subTitle} visible={subTitle !== null}>
+              <div>{title}</div>
+            </Tooltip>
           </div>
         </TitleHeader>
       </div>

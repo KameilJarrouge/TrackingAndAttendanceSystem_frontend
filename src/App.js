@@ -22,6 +22,11 @@ import SubjectProfessorsPage from "./pages/SubjectProfessorsPage";
 import SubjectStudentsPage from "./pages/SubjectStudentsPage";
 import CamLogPage from "./pages/CamLogPage";
 import CamSchedulePage from "./pages/CamSchedulePage";
+import StudentAttendancePage from "./pages/StudentAttendancePage";
+import ProfessorAttendancePage from "./pages/ProfessorAttendancePage";
+import SubjectStudentsAttendancePage from "./pages/SubjectStudentsAttendancePage";
+import SubjectProfessorAttendancePage from "./pages/SubjectProfessorAttendancePage";
+import AccountsPage from "./pages/AccountsPage";
 
 function App() {
   const [user, setUser] = useState(() => {
@@ -62,22 +67,43 @@ function App() {
                 element={<StudentSubjectsPage />}
               />
               <Route
+                path="student/:studentId/attendance"
+                element={<StudentAttendancePage />}
+              />
+
+              <Route
                 path="professor/:professorId/subjects"
                 element={<ProfessorSubjectsPage />}
+              />
+              <Route
+                path="professor/:professorId/attendance"
+                element={<ProfessorAttendancePage />}
               />
               <Route
                 path="subject/:subjectId/professors"
                 element={<SubjectProfessorsPage />}
               />
               <Route
+                path="subject/:subjectId/professors/attendance"
+                element={<SubjectProfessorAttendancePage />}
+              />
+
+              <Route
                 path="subject/:subjectId/students"
                 element={<SubjectStudentsPage />}
               />
+              <Route
+                path="subject/:subjectId/students/attendance"
+                element={<SubjectStudentsAttendancePage />}
+              />
+
               <Route path="camera/:camId/log" element={<CamLogPage />} />
               <Route
                 path="camera/:camId/schedule"
                 element={<CamSchedulePage />}
               />
+
+              <Route path="users" element={<AccountsPage />} />
 
               <Route path="student" element={<StudentsPage />} />
               <Route path="professor" element={<ProfessorsPage />} />

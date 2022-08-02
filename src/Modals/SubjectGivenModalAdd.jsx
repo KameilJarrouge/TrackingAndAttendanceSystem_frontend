@@ -211,8 +211,8 @@ function SubjectGivenModalAdd({ open, onClose, refresh, professorId }) {
               <div className="mt-3 flex flex-row-reverse justify-between">
                 <div className="w-[32%]">
                   <AppFormField
-                    infoWidth="3/4"
-                    inputWidth="1/4"
+                    infoWidth="3/5"
+                    inputWidth="2/5"
                     name={"attendance_pre"}
                     title="قبل البداية"
                     tooltipMessage="بدء تسجيل الحضور قبل البدء الرسمي للمحاضرة"
@@ -223,8 +223,8 @@ function SubjectGivenModalAdd({ open, onClose, refresh, professorId }) {
                   <AppFormField
                     tooltipMessage="مدة تسجيل الحضور بعد البدء الرسمي للمحاضرة"
                     tooltipVisiable
-                    infoWidth="3/4"
-                    inputWidth="1/4"
+                    infoWidth="3/5"
+                    inputWidth="2/5"
                     name={"attendance_post"}
                     title="النهاية"
                   />
@@ -234,8 +234,8 @@ function SubjectGivenModalAdd({ open, onClose, refresh, professorId }) {
                   <AppFormField
                     tooltipMessage="مدة تسجيل تواجد الطلاب بعد الانتهاء من تسجيل الحضور"
                     tooltipVisiable
-                    infoWidth="3/4"
-                    inputWidth="1/4"
+                    infoWidth="3/5"
+                    inputWidth="2/5"
                     name={"attendance_present"}
                     title="بعد النهاية"
                   />

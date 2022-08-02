@@ -60,6 +60,14 @@ function SubjectsPage() {
     navigate(`/subject/${subjectId}/students`);
   };
 
+  const handleStudentAttendanceNavigate = (subjectId) => {
+    navigate(`/subject/${subjectId}/students/attendance`);
+  };
+
+  const handleProfessorAttendanceNavigate = (subjectId) => {
+    navigate(`/subject/${subjectId}/professors/attendance`);
+  };
+
   return (
     <div className="py-6 px-14 h-[90vh] bg-background flex flex-col ">
       <SubjectModalAdd
@@ -132,7 +140,12 @@ function SubjectsPage() {
                       onClick={() => handleProfessorsNavigate(subject.id)}
                       className="hover:text-blue-500 transition-all cursor-pointer"
                     ></RiExternalLinkLine>
-                    <MdChecklistRtl className="hover:text-green-500 transition-all cursor-pointer" />
+                    <MdChecklistRtl
+                      onClick={() =>
+                        handleProfessorAttendanceNavigate(subject.id)
+                      }
+                      className="hover:text-green-500 transition-all cursor-pointer"
+                    />
                   </div>
                 </TCell>
                 <TCell>
@@ -142,7 +155,12 @@ function SubjectsPage() {
                       onClick={() => handleStudentsNavigate(subject.id)}
                       className="hover:text-blue-500 transition-all cursor-pointer"
                     ></RiExternalLinkLine>
-                    <MdChecklistRtl className="hover:text-green-500 transition-all cursor-pointer" />
+                    <MdChecklistRtl
+                      onClick={() =>
+                        handleStudentAttendanceNavigate(subject.id)
+                      }
+                      className="hover:text-green-500 transition-all cursor-pointer"
+                    />
                   </div>
                 </TCell>
                 {/* control */}

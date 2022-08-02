@@ -1,10 +1,12 @@
 import React from "react";
 
-function PageHeaderWSearch({ right, left }) {
+function PageHeaderWSearch({ right, left, withBorder = false, border = "" }) {
   return (
     <div
       dir="rtl"
-      className="w-full h-full bg-primary flex flex-row items-center "
+      className={`w-full h-full bg-primary flex flex-row items-center ${
+        withBorder && border
+      } `}
     >
       {right && (
         <>

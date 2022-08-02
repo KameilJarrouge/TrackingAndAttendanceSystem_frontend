@@ -8,6 +8,7 @@ import ErrorMessage from "./ErrorMessage";
 function AppFormField({
   name,
   title = "",
+  disabled = false,
   // displayNumberAsString = false,
   svg = null,
   infoWidth = "2/5",
@@ -15,6 +16,8 @@ function AppFormField({
   tooltipMessage = "",
   tooltipVisiable = false,
   withError = true,
+  zIndex = "50",
+
   ...otherProps
 }) {
   const { handleChange, setFieldTouched, touched, errors, values } =
@@ -25,7 +28,11 @@ function AppFormField({
       className={`flex flex-col 
         w-full h-${withError ? "[3.5rem]" : "[2rem]"} `}
     >
-      <Tooltip message={tooltipMessage} visible={tooltipVisiable}>
+      <Tooltip
+        message={tooltipMessage}
+        visible={tooltipVisiable}
+        zIndex={zIndex}
+      >
         <div
           dir="rtl"
           className="flex flex-row 
@@ -41,6 +48,7 @@ function AppFormField({
             {svg}
           </div>
           <input
+            disabled={disabled}
             className={`w-${inputWidth}  h-[2.0rem] pr-2
           border-[1px] border-primary  
           bg-background_input   

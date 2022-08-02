@@ -5,10 +5,8 @@ import Pagination from "../components/Pagination";
 import { BiLeftArrowCircle } from "react-icons/bi";
 import api from "../api/api";
 import { getUser } from "../api/user";
-
 import PageHeaderWSearch from "../components/PageHeaderWSearch";
 import AppForm from "../components/form/AppForm";
-
 import SubmitSearch from "../components/form/SubmitSearch";
 import { useParams } from "react-router-dom";
 import ModalHeader from "../Modals/ModalHeader";
@@ -17,6 +15,7 @@ import AppFormSelect from "../components/form/AppFormSelect";
 import { BsImage } from "react-icons/bs";
 import AppFormCheckBox2 from "../components/form/AppFormCheckBox2";
 import moment from "moment";
+import { Tooltip } from "../Modals/Tooltip";
 function PersonLog() {
   let user = getUser();
   let { personId } = useParams();
@@ -71,7 +70,7 @@ function PersonLog() {
               >
                 <div className="w-full h-full mx-4 flex items-center justify-between">
                   <div className="w-[90%] h-full flex items-center ">
-                    <div className="w-[60%] flex items-center">
+                    <div className="w-[50%] flex items-center">
                       <AppFormDatePicker
                         clearIcon
                         height="[2rem]"
@@ -86,8 +85,10 @@ function PersonLog() {
                         format="yyyy/MM/dd HH:mm"
                       ></AppFormDatePicker>
                     </div>
-                    <div className="w-[25%] mx-2 h-full">
+                    <div className="w-[30%] mx-2 h-full">
                       <AppFormSelect
+                        infoWidth="2/5"
+                        selectWidth="4/5"
                         defaultOption="جميع المواقع"
                         title="الموقع:"
                         name={"location"}
@@ -100,7 +101,11 @@ function PersonLog() {
                         <AppFormCheckBox2
                           className={"text-accent"}
                           name={"withImage"}
-                          input={<BsImage />}
+                          input={
+                            <Tooltip message={"صورة"} visible>
+                              <BsImage />
+                            </Tooltip>
+                          }
                         ></AppFormCheckBox2>
                       </div>
                     </div>

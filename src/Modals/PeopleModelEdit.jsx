@@ -11,6 +11,8 @@ import AppFormRadioButton from "../components/form/AppFormRadioButton";
 import AppFormCheckBox2 from "../components/form/AppFormCheckBox2";
 import { TbCrosshair, TbSquareForbid2 } from "react-icons/tb";
 import AppFormImage from "../components/form/AppFormImage";
+import { Tooltip } from "./Tooltip";
+import { FiEye } from "react-icons/fi";
 const validationSchema = Yup.object().shape({
   name: Yup.string().required("الحقل إجباري"),
   id_number: Yup.string().required("الحقل إجباري"),
@@ -115,6 +117,7 @@ function PeopleModalEdit({ open, onClose, refresh, id }) {
               id_number: person.id_number,
               name: person.name,
               track: person.track,
+              recognize: person.recognize,
               on_blacklist: person.on_blacklist,
               identity: person.identity,
             }}
@@ -150,16 +153,41 @@ function PeopleModalEdit({ open, onClose, refresh, id }) {
                         { name: "طالب", value: 1 },
                         { name: "مدرس", value: 2 },
                         { name: "إداري", value: 0 },
+
+                        { name: "غير", value: -1 },
                       ]}
                     ></AppFormRadioButton>
                   </div>
                   <div className="w-full flex justify-between items-center mt-4">
-                    {/* tracked */}
-                    <div className="w-1/2 flex">
-                      <div className=" w-3/4 h-[2rem] rounded-r-md flex justify-center items-center bg-primary text-xl font-semibold text-font">
-                        تعقب
+                    {/* recognize */}
+                    <div className="w-1/3 flex">
+                      <div className=" w-3/5 h-[2rem] rounded-r-md flex justify-center items-center bg-primary text-xl  text-font">
+                        <Tooltip message={"التعرف على الشخص"} visible nowrap>
+                          تعرف
+                        </Tooltip>
                       </div>
-                      <div className="w-1/12">
+                      <div className="w-2/5">
+                        <AppFormCheckBox2
+                          double
+                          className={"text-accent "}
+                          name={"recognize"}
+                          input={<FiEye className="text-3xl" />}
+                        ></AppFormCheckBox2>
+                      </div>
+                    </div>
+
+                    {/* tracked */}
+                    <div className="w-1/3 flex">
+                      <div className=" w-3/5 h-[2rem] rounded-r-md flex justify-center items-center bg-primary text-xl  text-font">
+                        <Tooltip
+                          message={"الاحتفاظ بصورة عند التعرف"}
+                          visible
+                          nowrap
+                        >
+                          تعقب
+                        </Tooltip>
+                      </div>
+                      <div className="w-2/5">
                         <AppFormCheckBox2
                           double
                           className={"text-amber-500"}
@@ -169,14 +197,16 @@ function PeopleModalEdit({ open, onClose, refresh, id }) {
                       </div>
                     </div>
                     {/* forbidden */}
-                    <div className="w-1/2 flex">
-                      <div className=" w-3/4 h-[2rem] rounded-r-md flex justify-center items-center bg-primary text-xl font-semibold text-font">
-                        ممنوع
+                    <div className="w-1/3 flex">
+                      <div className=" w-3/5 h-[2rem] rounded-r-md flex justify-center items-center bg-primary text-xl  text-font">
+                        <Tooltip message={"التعرف على الشخص"} visible nowrap>
+                          ممنوع
+                        </Tooltip>
                       </div>
-                      <div className="w-1/12">
+                      <div className="w-2/5">
                         <AppFormCheckBox2
                           double
-                          className={"text-red-500"}
+                          className={"text-red-500 "}
                           name={"on_blacklist"}
                           input={<TbSquareForbid2 className="text-3xl" />}
                         ></AppFormCheckBox2>

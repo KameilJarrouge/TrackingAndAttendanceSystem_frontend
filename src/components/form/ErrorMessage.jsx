@@ -4,7 +4,7 @@ function ErrorMessage({ visible, error }) {
     return null;
   }
   return (
-    <div className={"text-red-500 font-semibold text-right"}>
+    <div className={"text-red-500 text-sm font-semibold text-right"}>
       {"* " + error}{" "}
     </div>
   );

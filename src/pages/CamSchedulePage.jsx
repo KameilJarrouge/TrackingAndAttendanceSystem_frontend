@@ -73,7 +73,7 @@ function CamSchedulePage() {
           <PageHeader
             title={
               <div className="w-full h-full mx-4 flex items-center justify-center">
-                <div className="w-full h-full flex  items-center justify-center text-2xl font-bold text-font">
+                <div className="w-full h-full flex  items-center justify-center text-xl font-bold text-font">
                   <span className="ml-2">{" أوقات عمل الكاميرا: "}</span>
                   <span>{camera.location}</span>
                 </div>

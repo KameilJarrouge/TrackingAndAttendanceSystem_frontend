@@ -10,10 +10,12 @@ import { toast } from "react-toastify";
 import AppFormRadioButton from "../components/form/AppFormRadioButton";
 import AppFormCheckBox2 from "../components/form/AppFormCheckBox2";
 import { TbCrosshair, TbSquareForbid2 } from "react-icons/tb";
+import { FiEye } from "react-icons/fi";
 import AppFormImage from "../components/form/AppFormImage";
+import { Tooltip } from "./Tooltip";
 const validationSchema = Yup.object().shape({
   name: Yup.string().required("الحقل إجباري"),
-  id_number: Yup.string().required("الحقل إجباري"),
+  id_number: Yup.string(),
 });
 
 function PeopleModalAdd({ open, onClose, refresh }) {
@@ -23,6 +25,13 @@ function PeopleModalAdd({ open, onClose, refresh }) {
     fd.append("name", values.name.toString());
     fd.append("track", values.track);
     fd.append("on_blacklist", values.on_blacklist);
+
+    if (values.track === 1) {
+      fd.append("recognize", 1);
+    } else {
+      fd.append("recognize", values.recognize);
+    }
+
     fd.append("identity", values.identity);
     if (values.image1 !== undefined) {
       fd.append("image1", values.image1, "image1");
@@ -65,8 +74,9 @@ function PeopleModalAdd({ open, onClose, refresh }) {
               id_number: "",
               name: "",
               track: 0,
-              on_blacklist: 0,
               identity: 1,
+              recognize: 1,
+              on_blacklist: 0,
               image1: undefined,
               image2: undefined,
               image3: undefined,
@@ -91,7 +101,7 @@ function PeopleModalAdd({ open, onClose, refresh }) {
                   <AppFormField name={"name"} title={"الاسم"}></AppFormField>
                   {/* identity */}
                   <div className="w-full flex mb-2">
-                    <div className=" w-3/4 h-[2rem] rounded-r-md flex justify-center items-center bg-primary text-xl font-semibold text-font">
+                    <div className=" w-3/4 h-[2rem] rounded-r-md flex justify-center items-center bg-primary text-xl  text-font">
                       الهوية
                     </div>
                     <AppFormRadioButton
@@ -102,16 +112,41 @@ function PeopleModalAdd({ open, onClose, refresh }) {
                         { name: "طالب", value: 1 },
                         { name: "مدرس", value: 2 },
                         { name: "إداري", value: 0 },
+
+                        { name: "غير", value: -1 },
                       ]}
                     ></AppFormRadioButton>
                   </div>
                   <div className="w-full flex justify-between items-center mt-4">
-                    {/* tracked */}
-                    <div className="w-1/2 flex">
-                      <div className=" w-3/4 h-[2rem] rounded-r-md flex justify-center items-center bg-primary text-xl font-semibold text-font">
-                        تعقب
+                    {/* recognize */}
+                    <div className="w-1/3 flex">
+                      <div className=" w-3/5 h-[2rem] rounded-r-md flex justify-center items-center bg-primary text-xl  text-font">
+                        <Tooltip message={"التعرف على الشخص"} visible nowrap>
+                          تعرف
+                        </Tooltip>
                       </div>
-                      <div className="w-1/12">
+                      <div className="w-2/5">
+                        <AppFormCheckBox2
+                          double
+                          className={"text-accent "}
+                          name={"recognize"}
+                          input={<FiEye className="text-3xl" />}
+                        ></AppFormCheckBox2>
+                      </div>
+                    </div>
+
+                    {/* tracked */}
+                    <div className="w-1/3 flex">
+                      <div className=" w-3/5 h-[2rem] rounded-r-md flex justify-center items-center bg-primary text-xl  text-font">
+                        <Tooltip
+                          message={"الاحتفاظ بصورة عند التعرف"}
+                          visible
+                          nowrap
+                        >
+                          تعقب
+                        </Tooltip>
+                      </div>
+                      <div className="w-2/5">
                         <AppFormCheckBox2
                           double
                           className={"text-amber-500"}
@@ -120,15 +155,22 @@ function PeopleModalAdd({ open, onClose, refresh }) {
                         ></AppFormCheckBox2>
                       </div>
                     </div>
+
                     {/* forbidden */}
-                    <div className="w-1/2 flex">
-                      <div className=" w-3/4 h-[2rem] rounded-r-md flex justify-center items-center bg-primary text-xl font-semibold text-font">
-                        ممنوع
+                    <div className="w-1/3 flex">
+                      <div className=" w-3/5 h-[2rem] rounded-r-md flex justify-center items-center bg-primary text-xl  text-font">
+                        <Tooltip
+                          message={"الشخص ممنوع من دخول الحرم"}
+                          visible
+                          nowrap
+                        >
+                          ممنوع
+                        </Tooltip>
                       </div>
-                      <div className="w-1/12">
+                      <div className="w-2/5">
                         <AppFormCheckBox2
                           double
-                          className={"text-red-500"}
+                          className={"text-red-500 "}
                           name={"on_blacklist"}
                           input={<TbSquareForbid2 className="text-3xl" />}
                         ></AppFormCheckBox2>

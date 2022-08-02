@@ -15,6 +15,7 @@ import PageHeader from "../components/PageHeader";
 import { useParams } from "react-router-dom";
 import SubjectTakenModalAdd from "../Modals/SubjectTakenModalAdd";
 import SubjectTakenModalEdit from "../Modals/SubjectTakenModalEdit";
+import LatestSemester from "../components/LatestSemester";
 
 function StudentSubjectsPage() {
   let user = getUser();
@@ -71,7 +72,7 @@ function StudentSubjectsPage() {
           <PageHeader
             title={
               <div className="w-full h-full mx-4 flex items-center justify-center">
-                <div className="w-full h-full flex  items-center justify-center text-2xl font-bold text-font">
+                <div className="w-full h-full flex  items-center justify-center text-xl font-bold text-font">
                   <span className="ml-2">{" مقررات الطالب: "}</span>
                   <span>{student.name}</span>
                 </div>
@@ -84,6 +85,7 @@ function StudentSubjectsPage() {
                 onClick={() => setmodalIsOpen(true)}
               ></AiOutlinePlus>
             }
+            left={<LatestSemester refresh={refresh} />}
           ></PageHeader>
         </div>
 

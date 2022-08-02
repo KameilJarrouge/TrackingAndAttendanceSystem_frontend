@@ -15,6 +15,7 @@ import SubjectGivenModalAdd from "../Modals/SubjectGivenModalAdd";
 import SubjectGivenModalEdit from "../Modals/SubjectGivenModalEdit";
 import moment from "moment";
 import { getDayAsString } from "../components/getDayAsString";
+import LatestSemester from "../components/LatestSemester";
 
 function ProfessorSubjectsPage() {
   let user = getUser();
@@ -74,7 +75,7 @@ function ProfessorSubjectsPage() {
           <PageHeader
             title={
               <div className="w-full h-full mx-4 flex items-center justify-center">
-                <div className="w-full h-full flex  items-center justify-center text-2xl font-bold text-font">
+                <div className="w-full h-full flex  items-center justify-center text-xl font-bold text-font">
                   <span className="ml-2">{" مقررات المدرس: "}</span>
                   <span>{professor.name}</span>
                 </div>
@@ -87,6 +88,7 @@ function ProfessorSubjectsPage() {
                 onClick={() => setmodalIsOpen(true)}
               ></AiOutlinePlus>
             }
+            left={<LatestSemester refresh={refresh} />}
           ></PageHeader>
         </div>
 
@@ -106,26 +108,22 @@ function ProfessorSubjectsPage() {
           </thead>
           <tbody>
             {givenSubjects.map((givenSubject) => (
-              <tr key={givenSubject.pivot.id}>
-                <TCell>{givenSubject.pivot.is_theory ? "نظري" : "عملي"}</TCell>
-                <TCell>{givenSubject.name}</TCell>
-                <TCell>{givenSubject.department}</TCell>
+              <tr key={givenSubject.id}>
+                <TCell>{givenSubject.is_theory ? "نظري" : "عملي"}</TCell>
+                <TCell>{givenSubject.subject.name}</TCell>
+                <TCell>{givenSubject.subject.department}</TCell>
                 <TCell>
-                  {givenSubject.pivot.group === ""
-                    ? "--"
-                    : givenSubject.pivot.group}
+                  {givenSubject.group === "" ? "--" : givenSubject.group}
                 </TCell>
 
                 <TCell>
-                  {moment(givenSubject.pivot.time, "HH:mm:dd").format("HH:mm")}
+                  {moment(givenSubject.time, "HH:mm:dd").format("HH:mm")}
                 </TCell>
-                <TCell>{getDayAsString(givenSubject.pivot.day)}</TCell>
+                <TCell>{getDayAsString(givenSubject.day)}</TCell>
 
                 <TCell>
                   {/* location */}
-                  {givenSubject.given_subjects[0].cam === null
-                    ? "--"
-                    : givenSubject.given_subjects[0].cam}
+                  {givenSubject.cam === null ? "--" : givenSubject.cam.location}
                 </TCell>
                 {/* <TCell> */}
                 {/* links */}
@@ -140,11 +138,11 @@ function ProfessorSubjectsPage() {
                 <TCell>
                   <div className="flex justify-around text-xl text-primary ">
                     <BiEdit
-                      onClick={() => handleOpenEditModal(givenSubject.pivot.id)}
+                      onClick={() => handleOpenEditModal(givenSubject.id)}
                       className="hover:text-green-500 transition-all cursor-pointer"
                     ></BiEdit>
                     <MdDelete
-                      onClick={() => handleDelete(givenSubject.pivot.id)}
+                      onClick={() => handleDelete(givenSubject.id)}
                       className="hover:text-red-500 transition-all cursor-pointer"
                     ></MdDelete>
                   </div>

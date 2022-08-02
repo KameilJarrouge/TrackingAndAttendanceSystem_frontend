@@ -46,13 +46,13 @@ function LoginPage() {
           {/* seperator */}
           <div className="w-full h-0.5 bg-accent"></div>
           {/* form */}
-          <div className="h-4/5 ">
+          <div className="h-4/5 mt-2 ">
             <AppForm
               validationSchema={validationSchema}
               initialValues={{ username: "", password: "" }}
               onSubmit={handlesubmit}
             >
-              <div className=" h-[70%]">
+              <div className=" h-[65%]">
                 <LoginFormField
                   name={"username"}
                   title="اسم المستخدم"
@@ -63,7 +63,7 @@ function LoginPage() {
                   title="كلمة المرور"
                 ></LoginFormField>
               </div>
-              <div className="w-full flex items-start justify-center h-[30%]">
+              <div className="w-full flex items-start justify-center h-[35%]">
                 <LoginSubmitButton title={"تسجيل دخول"}></LoginSubmitButton>
               </div>
             </AppForm>

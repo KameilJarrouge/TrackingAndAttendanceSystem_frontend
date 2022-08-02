@@ -26,7 +26,7 @@ function ContainerPage() {
           } bg-primary text-font min-h-full transition-all `}
         > */}
         <div
-          className={`w-[7%] hover:w-[16%] z-50 
+          className={`w-[7%] 2xl:w-[5%] 2xl:hover:w-[12%]  hover:w-[16%] z-50 
            bg-primary text-font min-h-full transition-all flex`}
         >
           <SideBar
@@ -36,7 +36,7 @@ function ContainerPage() {
           <div className="w-[4px] h-full bg-accent"></div>
         </div>
         <div
-          className={`w-[93%] left-0 top-[10vh] bottom-0 fixed h-full bg-background`}
+          className={`w-[93%] 2xl:w-[95%] left-0 top-[10vh] bottom-0 fixed h-full bg-background`}
         >
           <Outlet />
         </div>

@@ -1,11 +1,13 @@
 import React, { useEffect, useState } from "react";
 import { GoTriangleLeft, GoTriangleRight } from "react-icons/go";
+import { toast } from "react-toastify";
 import api from "../api/api";
 function Pagination({
   dataUrl = "",
   setData = (f) => f,
-  numberPerPage = 11,
+  numberPerPage = 12,
   invoke = false,
+  logResult = false,
 }) {
   const [currentPage, setCurrentPage] = useState(1);
   const [nextPage, setNextPage] = useState(null);
@@ -18,9 +20,11 @@ function Pagination({
       concat = "&";
     }
     let res = await api.get(dataUrl + concat + "perPage=" + numberPerPage);
-    console.log("====================================");
-    console.log(res);
-    console.log("====================================");
+    if (logResult) {
+      console.log("====================================");
+      console.log(res);
+      console.log("====================================");
+    }
     setCurrentPage(res.data.current_page);
     setNextPage(res.data.next_page_url !== null);
     setPreviousPage(res.data.prev_page_url !== null);

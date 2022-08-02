@@ -1,13 +1,19 @@
+import { useFormikContext } from "formik";
 import React from "react";
+import { getTimeAsString } from "../getTimeAsString";
 
-function PrimaryInfo({
+function AppFormInfo({
   text,
-  data = "",
+  name,
   oriantation = "right",
   svg = null,
   textWidth = "2/5",
   dataWidth = "3/5",
+  renderFunc = (value) => value,
+  additionalName = "",
 }) {
+  const { handleChange, setFieldTouched, touched, errors, values } =
+    useFormikContext();
   return (
     <div
       dir="rtl"
@@ -25,10 +31,12 @@ function PrimaryInfo({
           text ? "rounded-l-lg" : "rounded-lg"
         } bg-background_special text-primary border-[1px] border-primary`}
       >
-        {data}
+        {additionalName === ""
+          ? renderFunc(values[name])
+          : renderFunc(values[name], values[additionalName])}
       </div>
     </div>
   );
 }
 
-export default PrimaryInfo;
+export default AppFormInfo;

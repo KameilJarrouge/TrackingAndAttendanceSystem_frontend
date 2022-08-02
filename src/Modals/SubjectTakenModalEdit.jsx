@@ -27,13 +27,7 @@ const filterOptions = createFilterOptions({
     option.group,
 });
 
-function SubjectTakenModalEdit({
-  open,
-  onClose,
-  refresh,
-  takenSubjectId,
-  subjectId,
-}) {
+function SubjectTakenModalEdit({ open, onClose, refresh, takenSubjectId }) {
   const [subjectOptions, setSubjectOptions] = useState([]);
   const [selectedSubject, setSelectedSubject] = useState(null);
   const [subjectInputValue, setSubjectInputValue] = useState("");
@@ -58,13 +52,15 @@ function SubjectTakenModalEdit({
   };
 
   const getGivenSubjectsOptions = async () => {
-    if (subjectId === 0) return;
-    let res = await api.get(`/api/given-subjects/${subjectId}/theory`);
+    if (!selectedSubject) return;
+    let res = await api.get(
+      `/api/given-subjects/${selectedSubject?.id}/theory`
+    );
     console.log("====================================");
     console.log("options", res.data);
     console.log("====================================");
     setTheoryOptions(res.data);
-    res = await api.get(`/api/given-subjects/${subjectId}/practical`);
+    res = await api.get(`/api/given-subjects/${selectedSubject?.id}/practical`);
     setPracticalOptions(res.data);
   };
 

@@ -25,12 +25,14 @@ import PeopleModalAdd from "../Modals/PeopleModalAdd";
 import PeopleModalEdit from "../Modals/PeopleModelEdit";
 import { IoBookOutline } from "react-icons/io5";
 import { useNavigate } from "react-router-dom";
+import { Tooltip } from "../Modals/Tooltip";
+import { FiEye } from "react-icons/fi";
 
 function PeoplePage() {
   let user = getUser();
   let navigate = useNavigate();
   const [dataUrl, setDataUrl] = useState(
-    `/api/people?identifier=&identity=-1&onCampus=-1&tracked=-1&blacklist=-1`
+    `/api/people?identifier=&identity=-1&onCampus=-1&tracked=-1&blacklist=-1&recognize=-1`
   );
   const [modalIsOpen, setmodalIsOpen] = useState(false);
   const [editModalIsOpen, setEditModalIsOpen] = useState(false);
@@ -44,7 +46,7 @@ function PeoplePage() {
         values.identifier === null ? "" : values.identifier
       }&identity=${values.identity}&onCampus=${values.onCampus}&tracked=${
         values.tracked
-      }&blacklist=${values.blacklist}`
+      }&blacklist=${values.blacklist}&recognize=${values.recognize}`
     );
   };
 
@@ -60,6 +62,11 @@ function PeoplePage() {
   const handleLogNavigation = (id) => {
     navigate(`/person/${id}/log`);
   };
+
+  const handleAttendanceNavigate = (id, identity) => {
+    navigate(`/${identity === 1 ? "student" : "professor"}/${id}/attendance`);
+  };
+
   const handleSubjectsNavigation = (id, isStudent) => {
     navigate(`/${isStudent ? "student" : "professor"}/${id}/subjects`);
   };
@@ -93,6 +100,7 @@ function PeoplePage() {
                 initialValues={{
                   identity: -1,
                   onCampus: -1,
+                  recognize: -1,
                   tracked: -1,
                   blacklist: -1,
                   identifier: "",
@@ -132,17 +140,41 @@ function PeoplePage() {
                       <AppFormCheckBox2
                         className={"text-accent"}
                         name={"onCampus"}
-                        input={<AiFillCheckSquare />}
+                        input={
+                          <Tooltip message={"متواجد"} visible>
+                            <AiFillCheckSquare />
+                          </Tooltip>
+                        }
                       ></AppFormCheckBox2>
+                      {/* ========== */}
+
+                      <AppFormCheckBox2
+                        className={"text-accent"}
+                        name={"recognize"}
+                        input={
+                          <Tooltip message={"متعرف"} visible>
+                            <FiEye />
+                          </Tooltip>
+                        }
+                      ></AppFormCheckBox2>
+                      {/* ----------- */}
                       <AppFormCheckBox2
                         className={"text-amber-500"}
                         name={"tracked"}
-                        input={<TbCrosshair />}
+                        input={
+                          <Tooltip message={"مراقب"} visible>
+                            <TbCrosshair />
+                          </Tooltip>
+                        }
                       ></AppFormCheckBox2>
                       <AppFormCheckBox2
                         className={"text-red-500"}
                         name={"blacklist"}
-                        input={<TbSquareForbid2 />}
+                        input={
+                          <Tooltip message={"ممنوع"} visible>
+                            <TbSquareForbid2 />
+                          </Tooltip>
+                        }
                       ></AppFormCheckBox2>
                     </div>
                   </div>
@@ -187,6 +219,11 @@ function PeoplePage() {
                         person.in_campus ? `text-green-500 ` : "text-font"
                       }
                     />
+                    <FiEye
+                      className={
+                        person.recognize ? `text-green-500 ` : "text-font"
+                      }
+                    />
                     <TbCrosshair
                       className={person.track ? `text-amber-500 ` : "text-font"}
                     />
@@ -212,9 +249,14 @@ function PeoplePage() {
                 </TCell>
                 <TCell>
                   <div className="flex justify-around text-xl text-primary ">
-                    {person.identity !== 0 && (
+                    {person.identity !== 0 && !person.on_blacklist && (
                       <>
-                        <MdChecklistRtl className=" hover:text-accent cursor-pointer" />
+                        <MdChecklistRtl
+                          onClick={() =>
+                            handleAttendanceNavigate(person.id, person.identity)
+                          }
+                          className=" hover:text-accent cursor-pointer"
+                        />
                         <IoBookOutline
                           onClick={() =>
                             handleSubjectsNavigation(

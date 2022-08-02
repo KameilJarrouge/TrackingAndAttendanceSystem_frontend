@@ -4,7 +4,13 @@ import { ReactComponent as Student } from "../assets/student.svg";
 import { ReactComponent as Professor } from "../assets/professor.svg";
 import { IoBookOutline, IoPersonOutline } from "react-icons/io5";
 import { TbDeviceComputerCamera } from "react-icons/tb";
-function SideBarLink({ to = "#", title = null, svg = null, ...otherProps }) {
+function SideBarLink({
+  to = "#",
+  title = null,
+  svg = null,
+  isActiveColor = "text-accent",
+  ...otherProps
+}) {
   const [isActive, setIsActive] = useState(false);
   const getSvg = () => {
     switch (svg) {
@@ -12,7 +18,7 @@ function SideBarLink({ to = "#", title = null, svg = null, ...otherProps }) {
         return (
           <IoPersonOutline
             className={`w-[40px] h-[40px] ${
-              isActive ? "text-accent" : "text-font"
+              isActive ? isActiveColor : "text-font"
             }`}
           />
         );
@@ -69,7 +75,7 @@ function SideBarLink({ to = "#", title = null, svg = null, ...otherProps }) {
         <div
           className={`${
             isActive ? "text-accent" : "text-font hover:text-background"
-          } font-bold text-2xl  text-center flex justify-start  items-center w-[120px]    transition-all`}
+          } font-bold text-xl  text-center flex justify-start  items-center w-[120px]    transition-all`}
         >
           <div>{title}</div>
         </div>

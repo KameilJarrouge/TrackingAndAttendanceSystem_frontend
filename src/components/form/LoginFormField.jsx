@@ -16,9 +16,9 @@ function LoginFormField({
     useFormikContext();
 
   return (
-    <div className={`text-left mx-2 flex flex-col `}>
+    <div className={`text-left mx-2 flex flex-col h-[5.8rem] `}>
       <div className="flex flex-col justify-start my-2">
-        <div className="text-3xl mb-2 h-[2.0rem]  rounded-r-lg text-font flex justify-end ">
+        <div className="text-2xl mb-2 h-[2.0rem]  rounded-r-lg text-font flex justify-end ">
           {title}
           {svg}
         </div>
@@ -30,7 +30,7 @@ function LoginFormField({
           {...otherProps}
           value={values[name]}
         />
-        <div className="w-full flex justify-end">
+        <div className="w-full flex h-[1.5rem] justify-end">
           <ErrorMessage
             visible={touched[name]}
             error={errors[name]}

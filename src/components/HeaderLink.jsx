@@ -9,7 +9,7 @@ function HeaderLink({ to = "#", title = null, svg = null, ...otherProps }) {
         title == null ? "px-1" : "px-4"
       } ${
         title == null ? "rounded-md" : "rounded-xl"
-      } font-bold text-2xl flex flex-row justify-between  items-center  border-2 
+      } font-bold text-xl flex flex-row justify-between  items-center  border-2 
       ${
         isActive
           ? "text-accent bg-primary border-accent "
