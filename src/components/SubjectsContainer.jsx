@@ -3,7 +3,13 @@ import THeader from "../components/THeader";
 import TCell from "../components/TCell";
 import PageHeader from "../components/PageHeader";
 import { AiOutlineInfoCircle } from "react-icons/ai";
-import { MdMoreTime, MdOutlineRestartAlt } from "react-icons/md";
+import {
+  MdChecklistRtl,
+  MdMoreTime,
+  MdOutlineRestartAlt,
+} from "react-icons/md";
+import { RiExternalLinkLine } from "react-icons/ri";
+
 import {
   BsFillArrowLeftSquareFill,
   BsFillArrowRightSquareFill,
@@ -14,8 +20,12 @@ import SubjectStatus from "../Enums/SubjectStatus";
 import SubjectDashboardModalInfo from "../Modals/SubjectDashboardModalInfo";
 import SubjectDashboardModalRestart from "../Modals/SubjectDashboardModalRestart";
 import SubjectDashboardModalExtend from "../Modals/SubjectDashboardModalExtend";
+import { getUser } from "../api/user";
+import { useNavigate } from "react-router-dom";
 
 function SubjectsContainer({
+  withControl = true,
+  withProfessor = true,
   subjects,
   currentId = 1,
   title = "title goes here",
@@ -23,6 +33,8 @@ function SubjectsContainer({
   hiddenColor,
   refresh = (f) => f,
 }) {
+  let navigate = useNavigate();
+  const [user, setUser] = useState(getUser());
   const [isOpen, setIsOpen] = useState(myId === currentId);
   const [infoModalIsOpen, setInfoModalIsOpen] = useState(false);
   const [extendModalIsOpen, setExtendModalIsOpen] = useState(false);
@@ -98,7 +110,7 @@ function SubjectsContainer({
                   </THeader>
 
                   <THeader width={"[10%]"}>المجموعة</THeader>
-                  <THeader width={"[20%]"}>المدرس</THeader>
+                  {withProfessor && <THeader width={"[20%]"}>المدرس</THeader>}
                   <THeader width={"[10%]"}>البدء</THeader>
                   <THeader width={"[10%]"}>الانتهاء</THeader>
                   <THeader width={"[10%]"}>تحكم</THeader>
@@ -112,7 +124,9 @@ function SubjectsContainer({
                     </TCell>
                     <TCell>{givenSubject.is_theory ? "نظري" : "عملي"}</TCell>
                     <TCell>{givenSubject.group || "--"}</TCell>
-                    <TCell>{givenSubject.professor.name}</TCell>
+                    {withProfessor && (
+                      <TCell>{givenSubject.professor.name}</TCell>
+                    )}
                     {givenSubject.restart_start_time === null ? (
                       <>
                         {" "}
@@ -166,23 +180,39 @@ function SubjectsContainer({
                             setSelectedId(givenSubject.id);
                           }}
                         />
-                        {myId === SubjectStatus.CURRENT && (
-                          <MdMoreTime
+                        {myId === SubjectStatus.FUTURE && user.isAdmin === 0 && (
+                          <MdChecklistRtl
+                            // strokeWidth={0.5}
                             className="cursor-pointer hover:text-accent transition-all"
                             onClick={() => {
-                              setExtendModalIsOpen(true);
-                              setSelectedId(givenSubject.id);
+                              navigate(
+                                `/my-subjects/${givenSubject.id}/students-attendance`
+                              );
                             }}
                           />
                         )}
-                        {myId === SubjectStatus.PREVIOUS && (
-                          <MdOutlineRestartAlt
-                            className="cursor-pointer hover:text-accent transition-all"
-                            onClick={() => {
-                              setRestartModalIsOpen(true);
-                              setSelectedId(givenSubject.id);
-                            }}
-                          />
+
+                        {withControl && (
+                          <>
+                            {myId === SubjectStatus.CURRENT && (
+                              <MdMoreTime
+                                className="cursor-pointer hover:text-accent transition-all"
+                                onClick={() => {
+                                  setExtendModalIsOpen(true);
+                                  setSelectedId(givenSubject.id);
+                                }}
+                              />
+                            )}
+                            {myId === SubjectStatus.PREVIOUS && (
+                              <MdOutlineRestartAlt
+                                className="cursor-pointer hover:text-accent transition-all"
+                                onClick={() => {
+                                  setRestartModalIsOpen(true);
+                                  setSelectedId(givenSubject.id);
+                                }}
+                              />
+                            )}
+                          </>
                         )}
                       </div>
                     </TCell>

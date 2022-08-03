@@ -20,11 +20,12 @@ import { TbMinusVertical } from "react-icons/tb";
 import { getTimeAsString } from "../components/getTimeAsString";
 import { getDayAsShortString } from "../components/getDayAsShortString";
 
-function ProfessorAttendancePage() {
+function ProfessorUserAttendancePage() {
   let user = getUser();
-  let { professorId } = useParams();
   let weekNumber =
     moment(user.semester.semester_start).diff(moment(), "weeks") + 1;
+  let professorId = user.person_id;
+
   const [dataUrl, setDataUrl] = useState(
     `/api/professors/${professorId}/given-subjects`
   );
@@ -199,6 +200,7 @@ function ProfessorAttendancePage() {
                           </TCell>
                           {givenSubject.attendances.map((attendance) => (
                             <AttendanceCellProf
+                              clickable={false}
                               attendance={attendance}
                               refresh={refresh}
                               openModal={() => setmodalIsOpen(true)}
@@ -229,4 +231,4 @@ function ProfessorAttendancePage() {
   );
 }
 
-export default ProfessorAttendancePage;
+export default ProfessorUserAttendancePage;

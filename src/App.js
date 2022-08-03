@@ -27,6 +27,10 @@ import ProfessorAttendancePage from "./pages/ProfessorAttendancePage";
 import SubjectStudentsAttendancePage from "./pages/SubjectStudentsAttendancePage";
 import SubjectProfessorAttendancePage from "./pages/SubjectProfessorAttendancePage";
 import AccountsPage from "./pages/AccountsPage";
+import ProfessorDashboardPage from "./pages/ProfessorDashboard";
+import ProfessorUserSubjectsPage from "./pages/ProfessorUserSubjectsPage";
+import ProfessorUserAttendancePage from "./pages/ProfessorUserAttendancePage";
+import GivenSubjectStudentsAttendance from "./pages/GivenSubjectStudentsAttendance";
 
 function App() {
   const [user, setUser] = useState(() => {
@@ -58,6 +62,11 @@ function App() {
             <Route path="/login" element={<LoginPage />} />
             <Route path="/" element={<ContainerPage></ContainerPage>}>
               <Route path="dashboard" element={<DashboardPage />} />
+              <Route
+                path="professor-dashboard"
+                element={<ProfessorDashboardPage />}
+              />
+
               <Route path="settings" element={<SettingPage />} />
               <Route path="semesters" element={<SemestersPage />} />
               <Route path="people" element={<PeoplePage />} />
@@ -108,6 +117,18 @@ function App() {
               <Route path="student" element={<StudentsPage />} />
               <Route path="professor" element={<ProfessorsPage />} />
               <Route path="subject" element={<SubjectsPage />} />
+              <Route
+                path="my-subjects"
+                element={<ProfessorUserSubjectsPage />}
+              />
+              <Route
+                path="my-attendance"
+                element={<ProfessorUserAttendancePage />}
+              />
+              <Route
+                path="my-subjects/:givenSubjectId/students-attendance"
+                element={<GivenSubjectStudentsAttendance />}
+              />
               <Route path="camera" element={<CamerasPage />} />
             </Route>
           </Routes>

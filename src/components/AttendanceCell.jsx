@@ -11,14 +11,17 @@ function AttendanceCell({
   setData = (f) => f,
   openModal = (f) => f,
   refresh,
+  clickable = true,
 }) {
   const handleClick = async () => {
+    if (!clickable) return;
     let res = await api.put(`/api/student-attendance/${attendance.id}/update`);
 
     refresh();
   };
 
   const handleDoubleClick = () => {
+    if (!clickable) return;
     if (attendance.verification_img) {
       setData(attendance.verification_img, attendance.timestamp);
       openModal();

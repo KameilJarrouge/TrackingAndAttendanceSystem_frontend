@@ -19,7 +19,8 @@ import AttendanceImageModal from "../Modals/AttendanceImageModal";
 function StudentAttendancePage() {
   let user = getUser();
   let { studentId } = useParams();
-
+  let weekNumber =
+    moment(user.semester.semester_start).diff(moment(), "weeks") + 1;
   const [dataUrl, setDataUrl] = useState(
     `/api/students/${studentId}/taken-subjects`
   );
@@ -114,7 +115,11 @@ function StudentAttendancePage() {
                       visible
                       textSize="xs"
                     >
-                      {index + 1}
+                      <span
+                        className={index + 1 === weekNumber && "text-accent"}
+                      >
+                        {index + 1}
+                      </span>
                     </Tooltip>
                   </THeader>
                 ))}

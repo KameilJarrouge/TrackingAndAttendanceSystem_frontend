@@ -13,14 +13,17 @@ import AttendanceCell from "../components/AttendanceCell";
 import { Tooltip } from "../Modals/Tooltip";
 import moment from "moment";
 import AttendanceImageModal from "../Modals/AttendanceImageModal";
+import { TbMinusVertical } from "react-icons/tb";
+import { getTimeAsString } from "../components/getTimeAsString";
+import { getDayAsShortString } from "../components/getDayAsShortString";
 
-function SubjectStudentsAttendancePage() {
+function GivenSubjectStudentsAttendance() {
   let user = getUser();
-  let { subjectId } = useParams();
+  let { givenSubjectId } = useParams();
   let weekNumber =
     moment(user.semester.semester_start).diff(moment(), "weeks") + 1;
   const [dataUrl, setDataUrl] = useState(
-    `/api/subjects/${subjectId}/students-attendance-detailed`
+    `/api/given-subjects/${givenSubjectId}/students-attendance-detailed`
   );
   const [weeks, setWeeks] = useState([]);
   const [modalIsOpen, setmodalIsOpen] = useState(false);
@@ -28,23 +31,23 @@ function SubjectStudentsAttendancePage() {
   const [imageSrc, setImageSrc] = useState("");
   const [timestamp, setTimestamp] = useState("");
   const [invoke, setInvoke] = useState(false);
-  const [students, setStudents] = useState([]);
-  const [subject, setSubject] = useState({});
+  const [takenSubjects, setTakenSubjects] = useState([]);
+  const [givenSubject, setGivenSubject] = useState({});
 
   const refresh = () => {
     setInvoke(invoke !== true);
   };
 
-  const getSubject = async () => {
-    let res = await api.get(`/api/subjects/${subjectId}`);
-    setSubject(res.data);
+  const getGivenSubject = async () => {
+    let res = await api.get(`/api/given-subjects/${givenSubjectId}/`);
+    setGivenSubject(res.data);
   };
   useEffect(() => {
-    getSubject();
+    getGivenSubject();
     if (user.semester.number_of_weeks === undefined) {
       return;
     }
-    console.log("now", user.semester.number_of_weeks);
+    // console.log("now", user.semester.number_of_weeks);
     if (parseInt(user.semester.number_of_weeks) !== 0) {
       setWeeks(Array(parseInt(user.semester.number_of_weeks)).fill(1));
     }
@@ -71,7 +74,20 @@ function SubjectStudentsAttendancePage() {
               <div className="w-full h-full mx-4 flex items-center justify-center">
                 <div className="w-full h-full flex  items-center justify-center text-xl font-bold text-font">
                   <span className="ml-2">{" حضور طلاب مقرر: "}</span>
-                  <span>{subject.name}</span>
+                  <span>{givenSubject?.subject?.name}</span>
+                  <div className="w-fit flex justify-evenly items-center text-base mr-2">
+                    <span>(</span>
+                    {givenSubject.is_theory ? "نظري" : "عملي"}
+
+                    <TbMinusVertical />
+
+                    <div>{getTimeAsString(givenSubject.time)}</div>
+
+                    <TbMinusVertical />
+
+                    <div>{getDayAsShortString(givenSubject.day)}</div>
+                    <span>)</span>
+                  </div>
                 </div>
               </div>
             }
@@ -100,7 +116,7 @@ function SubjectStudentsAttendancePage() {
           <table className="w-full table-fixed ">
             <thead className="w-full  sticky top-0">
               <tr className="w-full">
-                <THeader colSpan={3} width={"[25%]"}>
+                <THeader colSpan={2} width={"[25%]"}>
                   الأسابيع
                 </THeader>
                 {weeks.map((week, index) => (
@@ -124,73 +140,31 @@ function SubjectStudentsAttendancePage() {
               </tr>
             </thead>
             <tbody className="h-fit">
-              {students.map((student) => (
-                <>
-                  {(student.taken_subjects[0]?.given_subject_id_pr ||
-                    student.taken_subjects[0]?.given_subject_id_th) && (
-                    <>
-                      <tr className="w-full">
-                        <TCell
-                          fillColor="primary_dark"
-                          textColor="font"
-                          borderColor="primary"
-                          colSpan={2}
-                          rowSpan={
-                            student.taken_subjects[0]?.given_subject_id_pr &&
-                            student.taken_subjects[0]?.given_subject_id_th
-                              ? 2
-                              : 1
-                          }
-                        >
-                          {student.name}
-                        </TCell>
-                        {student.taken_subjects[0]?.given_subject_id_th && (
-                          <>
-                            <TCell
-                              borderColor="primary"
-                              fillColor="primary_dark"
-                              textColor="font"
-                            >
-                              نظري
-                            </TCell>
-                            {student.taken_subjects[0]?.attendances_th.map(
-                              (attendance) => (
-                                <AttendanceCell
-                                  attendance={attendance}
-                                  refresh={refresh}
-                                  openModal={() => setmodalIsOpen(true)}
-                                  setData={handleImageModalOpen}
-                                />
-                              )
-                            )}
-                          </>
-                        )}
-                      </tr>
+              {takenSubjects.map((takenSubject) => (
+                <tr>
+                  <TCell
+                    fillColor="primary_dark"
+                    textColor="font"
+                    borderColor="primary"
+                    colSpan={2}
+                  >
+                    {takenSubject.student.name}
+                  </TCell>
 
-                      {student.taken_subjects[0]?.given_subject_id_pr && (
-                        <tr>
-                          <TCell
-                            borderColor="primary"
-                            fillColor="primary_dark"
-                            textColor="font"
-                          >
-                            عملي
-                          </TCell>
-                          {student.taken_subjects[0]?.attendances_pr.map(
-                            (attendance) => (
-                              <AttendanceCell
-                                attendance={attendance}
-                                refresh={refresh}
-                                openModal={() => setmodalIsOpen(true)}
-                                setData={handleImageModalOpen}
-                              />
-                            )
-                          )}
-                        </tr>
-                      )}
-                    </>
-                  )}
-                </>
+                  {takenSubject[
+                    givenSubject.is_theory === 1
+                      ? "attendances_th"
+                      : "attendances_pr"
+                  ]?.map((attendance) => (
+                    <AttendanceCell
+                      clickable={false}
+                      attendance={attendance}
+                      refresh={refresh}
+                      openModal={() => setmodalIsOpen(true)}
+                      setData={handleImageModalOpen}
+                    />
+                  ))}
+                </tr>
               ))}
             </tbody>
           </table>
@@ -200,7 +174,7 @@ function SubjectStudentsAttendancePage() {
         <div className="w-1/6 ">
           <Pagination
             dataUrl={dataUrl}
-            setData={setStudents}
+            setData={setTakenSubjects}
             invoke={invoke}
             logResult
           ></Pagination>
@@ -210,4 +184,4 @@ function SubjectStudentsAttendancePage() {
   );
 }
 
-export default SubjectStudentsAttendancePage;
+export default GivenSubjectStudentsAttendance;

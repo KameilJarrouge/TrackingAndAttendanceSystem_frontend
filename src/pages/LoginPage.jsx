@@ -7,7 +7,7 @@ import SubmitButton from "../components/form/SubmitButton";
 import api from "../api/api";
 import UserContext from "../context/userContext";
 import { setToken } from "../api/token";
-import { setUser } from "../api/user";
+import { getUser, setUser } from "../api/user";
 import { useNavigate } from "react-router-dom";
 import LoginSubmitButton from "../components/form/LoginSubmitButton";
 const validationSchema = Yup.object().shape({
@@ -30,7 +30,12 @@ function LoginPage() {
     userContext.setUser(res.data.user);
     // setToken(res.data.token);
     setUser(res.data.user);
-    navigate("/dashboard");
+
+    if (res.data.user.isAdmin) {
+      navigate("/dashboard");
+    } else {
+      navigate("/professor-dashboard");
+    }
   };
   return (
     <div className="w-full h-[100vh] bg-background_special flex justify-center items-center">

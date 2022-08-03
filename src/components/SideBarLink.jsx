@@ -4,6 +4,7 @@ import { ReactComponent as Student } from "../assets/student.svg";
 import { ReactComponent as Professor } from "../assets/professor.svg";
 import { IoBookOutline, IoPersonOutline } from "react-icons/io5";
 import { TbDeviceComputerCamera } from "react-icons/tb";
+import { MdChecklistRtl } from "react-icons/md";
 function SideBarLink({
   to = "#",
   title = null,
@@ -14,6 +15,14 @@ function SideBarLink({
   const [isActive, setIsActive] = useState(false);
   const getSvg = () => {
     switch (svg) {
+      case "checklist":
+        return (
+          <MdChecklistRtl
+            className={`w-[40px] h-[40px] ${
+              isActive ? isActiveColor : "text-font"
+            }`}
+          />
+        );
       case "people":
         return (
           <IoPersonOutline

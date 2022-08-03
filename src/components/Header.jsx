@@ -73,15 +73,18 @@ function Header() {
         {/* nav area 2/5 */}
         <div className="flex items-center justify-start ">
           <HeaderLink
-            to="/dashboard"
+            to={`/${user.isAdmin === 0 ? "professor-" : ""}dashboard`}
             title={"الرئيسية"}
             svg={<AiFillHome />}
           ></HeaderLink>
-          <HeaderLink
-            to="settings"
-            title={"الإعدادات"}
-            svg={<IoMdSettings />}
-          ></HeaderLink>
+
+          {user.isAdmin === 1 && (
+            <HeaderLink
+              to="settings"
+              title={"الإعدادات"}
+              svg={<IoMdSettings />}
+            ></HeaderLink>
+          )}
           <HeaderLink
             to="notifications"
             title={"الإشعارات"}
@@ -121,33 +124,37 @@ function Header() {
       {profileMenu && (
         <div
           ref={wrapperRef}
-          className={`fixed top-[10vh] left-7 w-[12rem] h-[10rem] bg-primary_dark shadow-xl shadow-primary_dark2 border-r-2 border-l-2 border-b-2 border-accent z-50 transition-all rounded-b-lg `}
+          className={`fixed top-[10vh] left-7 w-[12rem] h-auto bg-primary_dark shadow-xl shadow-primary_dark2 border-r-2 border-l-2 border-b-2 border-accent z-50 transition-all rounded-b-lg `}
         >
           <div className="w-full h-full flex flex-col justify-start items-center">
             <NavLink
               to={"#"}
               onClick={() => offProfileAndOpenModal()}
-              className="w-full h-1/2  border-primary flex justify-center items-center text-font font-bold text-lg hover:text-white "
+              className="w-full h-1/2  border-primary flex justify-center items-center text-font font-bold text-lg hover:text-white py-3 "
             >
               <CgProfile className=" text-2xl w-1/5"></CgProfile>
               <TbMinusVertical className=""></TbMinusVertical>
               <span className="w-3/5 text-center">المستخدم</span>
             </NavLink>
-            <div className="w-full h-0.5 bg-primary "></div>
-            <NavLink
-              to={"/users"}
-              onClick={() => setProfileMenu(false)}
-              className="w-full h-1/2  border-primary flex justify-center items-center text-font font-bold text-lg hover:text-white "
-            >
-              <MdOutlineManageAccounts className=" text-2xl w-1/5"></MdOutlineManageAccounts>
-              <TbMinusVertical className=""></TbMinusVertical>
-              <span className="w-3/5 text-center"> إدارة المستخدمين</span>
-            </NavLink>
 
+            {user.isAdmin === 1 && (
+              <>
+                <div className="w-full h-0.5 bg-primary "></div>
+                <NavLink
+                  to={"/users"}
+                  onClick={() => setProfileMenu(false)}
+                  className="w-full h-1/2  border-primary flex justify-center items-center text-font font-bold text-lg hover:text-white py-3 "
+                >
+                  <MdOutlineManageAccounts className=" text-2xl w-1/5"></MdOutlineManageAccounts>
+                  <TbMinusVertical className=""></TbMinusVertical>
+                  <span className="w-3/5 text-center"> إدارة المستخدمين</span>
+                </NavLink>
+              </>
+            )}
             <div className="w-full h-0.5 bg-primary "></div>
             <button
               onClick={handleLogout}
-              className="w-full h-1/2  border-primary flex justify-center items-center text-font  font-bold text-lg hover:text-white "
+              className="w-full h-1/2  border-primary flex justify-center items-center text-font  font-bold text-lg hover:text-white py-3 "
             >
               <MdLogout className="text-2xl  w-1/5 "></MdLogout>
               <TbMinusVertical className=""></TbMinusVertical>

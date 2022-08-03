@@ -23,7 +23,8 @@ import { TbMinusVertical } from "react-icons/tb";
 function SubjectProfessorAttendancePage() {
   let user = getUser();
   let { subjectId } = useParams();
-
+  let weekNumber =
+    moment(user.semester.semester_start).diff(moment(), "weeks") + 1;
   const [dataUrl, setDataUrl] = useState(
     `/api/subjects/${subjectId}/professors-attendance-detailed`
   );
@@ -110,7 +111,11 @@ function SubjectProfessorAttendancePage() {
                       visible
                       textSize="xs"
                     >
-                      {index + 1}
+                      <span
+                        className={index + 1 === weekNumber && "text-accent"}
+                      >
+                        {index + 1}
+                      </span>
                     </Tooltip>
                   </THeader>
                 ))}
