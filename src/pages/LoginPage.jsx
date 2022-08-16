@@ -20,8 +20,13 @@ function LoginPage() {
   const getCookie = async () => {
     await api.get(`/sanctum/csrf-cookie`);
   };
+  const getTest = async () => {
+    let res = await api.get("/api/python-data-people");
+    console.log(res.data);
+  };
   useEffect(() => {
     getCookie();
+    getTest();
   }, []);
 
   const handlesubmit = async (values) => {

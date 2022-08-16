@@ -9,9 +9,6 @@ import { getUser } from "../api/user";
 import { MdDangerous } from "react-icons/md";
 import PageHeader from "../components/PageHeader";
 import { useParams } from "react-router-dom";
-import StudentTakenModalAdd from "../Modals/StudentTakenModalAdd";
-import { GoPrimitiveDot } from "react-icons/go";
-import AttendanceCell from "../components/AttendanceCell";
 import { Tooltip } from "../Modals/Tooltip";
 import moment from "moment";
 import AttendanceImageModal from "../Modals/AttendanceImageModal";
@@ -24,7 +21,7 @@ function ProfessorAttendancePage() {
   let user = getUser();
   let { professorId } = useParams();
   let weekNumber =
-    moment(user.semester.semester_start).diff(moment(), "weeks") + 1;
+    Math.abs(moment(user.semester.semester_start).diff(moment(), "weeks")) + 1;
   const [dataUrl, setDataUrl] = useState(
     `/api/professors/${professorId}/given-subjects`
   );

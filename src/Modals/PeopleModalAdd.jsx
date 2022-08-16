@@ -113,7 +113,7 @@ function PeopleModalAdd({ open, onClose, refresh }) {
                         { name: "مدرس", value: 2 },
                         { name: "إداري", value: 0 },
 
-                        { name: "غير", value: -1 },
+                        { name: "غير", value: 3 },
                       ]}
                     ></AppFormRadioButton>
                   </div>

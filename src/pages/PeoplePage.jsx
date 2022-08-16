@@ -98,7 +98,7 @@ function PeoplePage() {
             left={
               <AppForm
                 initialValues={{
-                  identity: -1,
+                  identity: -2,
                   onCampus: -1,
                   recognize: -1,
                   tracked: -1,
@@ -118,7 +118,7 @@ function PeoplePage() {
                     </div>
                   </div>
                   <div className="w-[30%] h-full flex items-center justify-start">
-                    <span className="text-font text-xl font-bold mr-2 w-[25%]">
+                    <span className="text-font text-xl font-bold mr-2 w-[20%]">
                       الهوية:
                     </span>
                     <div className="w-[50%]">
@@ -128,6 +128,7 @@ function PeoplePage() {
                           { name: "طالب", value: 1 },
                           { name: "مدرس", value: 2 },
                           { name: "إداري", value: 0 },
+                          { name: "غير", value: 3 },
                         ]}
                       ></AppFormRadioButton>
                     </div>

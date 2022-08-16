@@ -126,7 +126,7 @@ function App() {
                 element={<ProfessorUserAttendancePage />}
               />
               <Route
-                path="my-subjects/:givenSubjectId/students-attendance"
+                path="my-subjects/:givenSubjectId/students-attendance/:isTheory"
                 element={<GivenSubjectStudentsAttendance />}
               />
               <Route path="camera" element={<CamerasPage />} />

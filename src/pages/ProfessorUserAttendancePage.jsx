@@ -23,7 +23,7 @@ import { getDayAsShortString } from "../components/getDayAsShortString";
 function ProfessorUserAttendancePage() {
   let user = getUser();
   let weekNumber =
-    moment(user.semester.semester_start).diff(moment(), "weeks") + 1;
+    Math.abs(moment(user.semester.semester_start).diff(moment(), "weeks")) + 1;
   let professorId = user.person_id;
 
   const [dataUrl, setDataUrl] = useState(

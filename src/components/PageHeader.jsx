@@ -13,7 +13,7 @@ function PageHeader({
   return (
     <div
       dir="rtl"
-      className={`w-full h-full bg-primary flex flex-row items-center ${
+      className={`w-full h-full bg-primary flex flex-row items-center text-base ${
         withBorder && border
       } `}
     >

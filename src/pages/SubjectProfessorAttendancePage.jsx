@@ -24,7 +24,7 @@ function SubjectProfessorAttendancePage() {
   let user = getUser();
   let { subjectId } = useParams();
   let weekNumber =
-    moment(user.semester.semester_start).diff(moment(), "weeks") + 1;
+    Math.abs(moment(user.semester.semester_start).diff(moment(), "weeks")) + 1;
   const [dataUrl, setDataUrl] = useState(
     `/api/subjects/${subjectId}/professors-attendance-detailed`
   );

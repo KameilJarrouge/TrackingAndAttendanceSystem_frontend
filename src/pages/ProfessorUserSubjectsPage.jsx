@@ -98,7 +98,9 @@ function ProfessorUserSubjectsPage() {
                     <MdChecklistRtl
                       onClick={() =>
                         navigate(
-                          `/my-subjects/${givenSubject.id}/students-attendance`
+                          `/my-subjects/${
+                            givenSubject.id
+                          }/students-attendance/${givenSubject.is_theory === 1}`
                         )
                       }
                       className="hover:text-accent transition-all cursor-pointer"

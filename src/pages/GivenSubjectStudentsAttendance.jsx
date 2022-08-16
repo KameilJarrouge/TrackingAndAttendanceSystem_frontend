@@ -19,12 +19,15 @@ import { getDayAsShortString } from "../components/getDayAsShortString";
 
 function GivenSubjectStudentsAttendance() {
   let user = getUser();
-  let { givenSubjectId } = useParams();
+  let { givenSubjectId, isTheory } = useParams();
   let weekNumber =
-    moment(user.semester.semester_start).diff(moment(), "weeks") + 1;
+    Math.abs(moment(user.semester.semester_start).diff(moment(), "weeks")) + 1;
   const [dataUrl, setDataUrl] = useState(
-    `/api/given-subjects/${givenSubjectId}/students-attendance-detailed`
+    `/api/given-subjects/${givenSubjectId}/students-attendance-detailed-${
+      isTheory === "true" ? "theory" : "practical"
+    }`
   );
+
   const [weeks, setWeeks] = useState([]);
   const [modalIsOpen, setmodalIsOpen] = useState(false);
 
@@ -70,6 +73,9 @@ function GivenSubjectStudentsAttendance() {
       <div className="w-full h-[88%] flex flex-col ">
         <div className="w-full h-1/6 bg-black mb-2">
           <PageHeader
+            rightWidth="1/4"
+            leftWidth="1/4"
+            titleWidth="1/2"
             title={
               <div className="w-full h-full mx-4 flex items-center justify-center">
                 <div className="w-full h-full flex  items-center justify-center text-xl font-bold text-font">

@@ -43,7 +43,7 @@ function ProfessorDashboardPage() {
             refresh={getSubjects}
             currentId={currentIsOpen}
             myId={SubjectStatus.PREVIOUS}
-            title={"محاضرات سابقة"}
+            title={"المحاضرات السابقة"}
             hiddenColor="primary_dark"
             subjects={subjectsPrev === undefined ? [] : subjectsPrev}
           />
@@ -64,7 +64,7 @@ function ProfessorDashboardPage() {
             refresh={getSubjects}
             currentId={currentIsOpen}
             myId={SubjectStatus.CURRENT}
-            title={"محاضرات حالية"}
+            title={"المحاضرات الحالية"}
             hiddenColor="primary_dark"
             subjects={subjectsCurr === undefined ? [] : subjectsCurr}
           />
@@ -85,7 +85,7 @@ function ProfessorDashboardPage() {
             refresh={getSubjects}
             currentId={currentIsOpen}
             myId={SubjectStatus.FUTURE}
-            title={"محاضرات تالية"}
+            title={"المحاضرات التالية"}
             hiddenColor="primary_dark"
             subjects={subjectsFuture === undefined ? [] : subjectsFuture}
           />
