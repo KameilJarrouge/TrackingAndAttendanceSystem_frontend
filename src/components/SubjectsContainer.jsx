@@ -140,7 +140,7 @@ function SubjectsContainer({
                           {moment(givenSubject.time, "HH:mm:ss")
                             .add(
                               parseInt(
-                                givenSubject.attendance_extend * 2 +
+                                givenSubject.attendance_extend +
                                   givenSubject.attendance_post +
                                   givenSubject.attendance_present
                               ),
@@ -195,13 +195,19 @@ function SubjectsContainer({
                         {withControl && (
                           <>
                             {myId === SubjectStatus.CURRENT && (
-                              <MdMoreTime
-                                className="cursor-pointer hover:text-accent transition-all"
-                                onClick={() => {
-                                  setExtendModalIsOpen(true);
-                                  setSelectedId(givenSubject.id);
-                                }}
-                              />
+                              <>
+                                {givenSubject.attendance_extend !== 0 ? (
+                                  <MdMoreTime className=" text-accent transition-all" />
+                                ) : (
+                                  <MdMoreTime
+                                    className="cursor-pointer hover:text-accent transition-all"
+                                    onClick={() => {
+                                      setExtendModalIsOpen(true);
+                                      setSelectedId(givenSubject.id);
+                                    }}
+                                  />
+                                )}
+                              </>
                             )}
                             {myId === SubjectStatus.PREVIOUS && (
                               <MdOutlineRestartAlt
