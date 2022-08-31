@@ -13,6 +13,7 @@ import AppFormRadioButton from "../components/form/AppFormRadioButton";
 import PrimaryInfo from "../components/PrimaryInfo";
 import { getTimeAsString } from "../components/getTimeAsString";
 import { Tooltip } from "./Tooltip";
+import { bindAction } from "../components/InitializeEcho";
 function SubjectDashboardModalInfo({ open, onClose, refresh, givenSubjectId }) {
   const [givenSubject, setGivenSubject] = useState({});
 
@@ -27,6 +28,14 @@ function SubjectDashboardModalInfo({ open, onClose, refresh, givenSubjectId }) {
 
   useEffect(() => {
     getSubject();
+    // refresh the subject when a student or a professor is checked as attended from python
+    if (givenSubjectId !== 0) {
+      bindAction(
+        "attendanceChannel" + givenSubjectId,
+        "GSAttendanceEvent",
+        getSubject
+      );
+    }
   }, [givenSubjectId]);
 
   return (

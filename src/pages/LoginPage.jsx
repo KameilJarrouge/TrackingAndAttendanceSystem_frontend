@@ -21,7 +21,7 @@ function LoginPage() {
     await api.get(`/sanctum/csrf-cookie`);
   };
   const getTest = async () => {
-    let res = await api.get("/api/python-data-gs");
+    let res = await api.get("/api/python-data-people");
     console.log("the data", res.data);
   };
   useEffect(() => {

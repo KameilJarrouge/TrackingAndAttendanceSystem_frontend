@@ -16,6 +16,7 @@ import AttendanceImageModal from "../Modals/AttendanceImageModal";
 import { TbMinusVertical } from "react-icons/tb";
 import { getTimeAsString } from "../components/getTimeAsString";
 import { getDayAsShortString } from "../components/getDayAsShortString";
+import { bindAction } from "../components/InitializeEcho";
 
 function GivenSubjectStudentsAttendance() {
   let user = getUser();
@@ -47,6 +48,13 @@ function GivenSubjectStudentsAttendance() {
   };
   useEffect(() => {
     getGivenSubject();
+
+    bindAction(
+      "attendanceChannel" + givenSubjectId,
+      "GSAttendanceEvent",
+      getGivenSubject
+    );
+
     if (user.semester.number_of_weeks === undefined) {
       return;
     }

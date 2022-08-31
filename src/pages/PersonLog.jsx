@@ -54,8 +54,8 @@ function PersonLog() {
 
   return (
     <div className="py-6 px-14 h-[90vh] bg-background flex flex-col ">
-      <div className="w-full h-[88%] flex flex-col ">
-        <div className="w-full h-1/6 bg-black mb-2">
+      <div className="w-full h-full flex flex-col ">
+        <div className="w-full bg-black mb-2">
           <PageHeaderWSearch
             left={
               <AppForm
@@ -68,7 +68,7 @@ function PersonLog() {
                 onSubmit={getLogs}
                 validationSchema={null}
               >
-                <div className="w-full h-full mx-4 flex items-center justify-between">
+                <div className="w-full h-full mx-4 py-3 flex items-center justify-between">
                   <div className="w-[90%] h-full flex items-center ">
                     <div className="w-[50%] flex items-center">
                       <AppFormDatePicker
@@ -87,7 +87,7 @@ function PersonLog() {
                     </div>
                     <div className="w-[30%] mx-2 h-full">
                       <AppFormSelect
-                        infoWidth="2/5"
+                        infoWidth="1/5"
                         selectWidth="4/5"
                         defaultOption="جميع المواقع"
                         title="الموقع:"
@@ -96,7 +96,7 @@ function PersonLog() {
                       ></AppFormSelect>
                     </div>
 
-                    <div className="w-[10%] mx-2 h-full flex justify-center ">
+                    <div className="w-[4%] mx-2 h-full flex justify-center ">
                       <div className="w-auto">
                         <AppFormCheckBox2
                           className={"text-accent"}
@@ -120,14 +120,8 @@ function PersonLog() {
             right={null}
           ></PageHeaderWSearch>
         </div>
-        <div
-          className=" flex
-      w-full h-full"
-        >
-          <div
-            className="flex flex-col
-          w-1/2 h-full"
-          >
+        <div className=" flex w-full h-5/6">
+          <div className="flex flex-col w-1/2 h-full">
             {/* right panel */}
             <div className="w-full h-5/6">
               <table className="w-full  table-fixed ">
@@ -144,7 +138,9 @@ function PersonLog() {
                       <TCell>{log.cam?.location}</TCell>
                       <TCell>
                         <div dir="ltr">
-                          {moment(log.timestamp).format("YYYY-MM-DD HH:mm:ss")}
+                          {moment(log.timestamp).format(
+                            "YYYY-MM-DD | HH:mm:ss"
+                          )}
                         </div>
                       </TCell>
                       <TCell>
@@ -177,11 +173,11 @@ function PersonLog() {
         w-1/2 h-full"
           >
             {/* left panel */}
-            <div className="h-[9%]">
+            <div className="h-[7%]">
               <ModalHeader title={person?.name || ""}></ModalHeader>
             </div>
-            <div className="w-full h-[91%] p-2 border-[0.2px] border-primary">
-              <img src={imageSrc} alt="" className="w-full h-[400px] " />
+            <div className="w-full h-[93%] p-1 border-[0.2px] border-primary">
+              <img src={imageSrc} alt="" className="w-full h-full " />
             </div>
           </div>
         </div>

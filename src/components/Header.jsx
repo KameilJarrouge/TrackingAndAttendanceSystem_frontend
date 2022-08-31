@@ -15,9 +15,10 @@ import { removeToken } from "../api/token";
 import { getUser, removeUser } from "../api/user";
 import { CgProfile } from "react-icons/cg";
 import userEvent from "@testing-library/user-event";
-import { MdLogout, MdOutlineManageAccounts } from "react-icons/md";
+import { MdDateRange, MdLogout, MdOutlineManageAccounts } from "react-icons/md";
 import { TbMinusVertical } from "react-icons/tb";
 import MyAccountModal from "../Modals/MyAccountModal";
+import { BsCalendarDateFill } from "react-icons/bs";
 function Header() {
   const [profileMenu, setProfileMenu] = useState(false);
   const [modalIsOpen, setmodalIsOpen] = useState(false);
@@ -72,24 +73,25 @@ function Header() {
         </div>
         {/* nav area 2/5 */}
         <div className="flex items-center justify-start ">
-          <HeaderLink
-            to={`/${user.isAdmin === 0 ? "professor-" : ""}dashboard`}
-            title={"الرئيسية"}
-            svg={<AiFillHome />}
-          ></HeaderLink>
-
           {user.isAdmin === 1 && (
-            <HeaderLink
-              to="settings"
-              title={"الإعدادات"}
-              svg={<IoMdSettings />}
-            ></HeaderLink>
+            <>
+              <HeaderLink
+                to={`/${user.isAdmin === 0 ? "professor-" : ""}dashboard`}
+                title={"الرئيسية"}
+                svg={<AiFillHome />}
+              ></HeaderLink>
+              <HeaderLink
+                to="settings"
+                title={"الإعدادات"}
+                svg={<IoMdSettings />}
+              ></HeaderLink>
+              <HeaderLink
+                to="holidays"
+                title={"الأعطال"}
+                svg={<MdDateRange />}
+              ></HeaderLink>
+            </>
           )}
-          <HeaderLink
-            to="notifications"
-            title={"الإشعارات"}
-            svg={<IoMdNotifications />}
-          ></HeaderLink>
         </div>
       </div>
 

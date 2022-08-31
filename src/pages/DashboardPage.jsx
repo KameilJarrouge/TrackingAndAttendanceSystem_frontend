@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import api from "../api/api";
+import { bindAction } from "../components/InitializeEcho";
 import SubjectsContainer from "../components/SubjectsContainer";
 import SubjectStatus from "../Enums/SubjectStatus";
 
@@ -20,6 +21,8 @@ function DashboardPage() {
 
   useEffect(() => {
     getSubjects();
+    // this will fetch the newest GSes from the backend whenever the python says a gs is finished
+    bindAction("reactChannel", "GSFinishedEvent", getSubjects);
   }, []);
 
   return (

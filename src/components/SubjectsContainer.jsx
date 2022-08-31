@@ -6,9 +6,9 @@ import { AiOutlineInfoCircle } from "react-icons/ai";
 import {
   MdChecklistRtl,
   MdMoreTime,
+  MdOutlineCancel,
   MdOutlineRestartAlt,
 } from "react-icons/md";
-import { RiExternalLinkLine } from "react-icons/ri";
 
 import {
   BsFillArrowLeftSquareFill,
@@ -22,6 +22,7 @@ import SubjectDashboardModalRestart from "../Modals/SubjectDashboardModalRestart
 import SubjectDashboardModalExtend from "../Modals/SubjectDashboardModalExtend";
 import { getUser } from "../api/user";
 import { useNavigate } from "react-router-dom";
+import api from "../api/api";
 
 function SubjectsContainer({
   withControl = true,
@@ -59,6 +60,12 @@ function SubjectsContainer({
       setFilteredSubjects(subjects);
     }
   }, [filter, subjects]);
+
+  const handleSkipping = (id, skipped = false) => {
+    let res = api.put(
+      `/api/given-subjects/${id}/${skipped ? "un" : ""}skip-this-week`
+    );
+  };
 
   return (
     <div className="w-full h-full flex flex-col transition-all  ">
@@ -199,13 +206,19 @@ function SubjectsContainer({
                                 {givenSubject.attendance_extend !== 0 ? (
                                   <MdMoreTime className=" text-accent transition-all" />
                                 ) : (
-                                  <MdMoreTime
-                                    className="cursor-pointer hover:text-accent transition-all"
-                                    onClick={() => {
-                                      setExtendModalIsOpen(true);
-                                      setSelectedId(givenSubject.id);
-                                    }}
-                                  />
+                                  <>
+                                    {givenSubject.restart_duration !== null ? (
+                                      <MdOutlineRestartAlt className=" text-blue-500 transition-all" />
+                                    ) : (
+                                      <MdMoreTime
+                                        className="cursor-pointer hover:text-accent transition-all"
+                                        onClick={() => {
+                                          setExtendModalIsOpen(true);
+                                          setSelectedId(givenSubject.id);
+                                        }}
+                                      />
+                                    )}
+                                  </>
                                 )}
                               </>
                             )}
@@ -218,6 +231,19 @@ function SubjectsContainer({
                                 }}
                               />
                             )}
+                            <MdOutlineCancel
+                              className={`cursor-pointer ${
+                                givenSubject.skipped === 1
+                                  ? "text-red-500 hover:text-inherit"
+                                  : "hover:text-red-500"
+                              }  transition-all`}
+                              onClick={() => {
+                                handleSkipping(
+                                  givenSubject.id,
+                                  givenSubject.skipped
+                                );
+                              }}
+                            />
                           </>
                         )}
                       </div>

@@ -18,9 +18,13 @@ import { FiEyeOff } from "react-icons/fi";
 import { AiOutlineWarning } from "react-icons/ai";
 import { Tooltip } from "../Modals/Tooltip";
 import { toast } from "react-toastify";
+import AttendanceImageModal from "../Modals/AttendanceImageModal";
 
 function CamLogPage() {
   let user = getUser();
+  const [modalIsOpen, setmodalIsOpen] = useState(false);
+  const [timestamp, setTimestamp] = useState("");
+
   let { camId } = useParams();
   const [invoke, setInvoke] = useState(false);
   const [dataUrl, setDataUrl] = useState(
@@ -62,12 +66,24 @@ function CamLogPage() {
     setInvoke(invoke !== true);
   };
 
+  const handleImageModalOpen = (src, timestamp) => {
+    setmodalIsOpen(true);
+    setImageSrc(src);
+    setTimestamp(timestamp);
+  };
+
   useEffect(() => {
     getCamera();
   }, []);
 
   return (
     <div className="py-6 px-14 h-[90vh] bg-background flex flex-col ">
+      <AttendanceImageModal
+        open={modalIsOpen}
+        onClose={() => setmodalIsOpen(false)}
+        imageSrc={imageSrc}
+        timestamp={timestamp}
+      ></AttendanceImageModal>
       <div className="w-full h-full flex flex-col ">
         <div className="w-full h-1/6 bg-black mb-2">
           <PageHeaderWSearch
@@ -202,7 +218,9 @@ function CamLogPage() {
                       <TCell>{log.person?.name || "--"}</TCell>
                       <TCell>
                         <div dir="ltr">
-                          {moment(log.timestamp).format("YYYY-MM-DD HH:mm:ss")}
+                          {moment(log.timestamp).format(
+                            "YYYY-MM-DD   |   HH:mm:ss"
+                          )}
                         </div>
                       </TCell>
                       {/* unknown? */}
@@ -266,7 +284,12 @@ function CamLogPage() {
                             <BsImage className={`text-xl text-font`}></BsImage>
                           ) : (
                             <BsImage
-                              onClick={() => setImageSrc(log.verification_img)}
+                              onClick={() =>
+                                handleImageModalOpen(
+                                  log.verification_img,
+                                  log.timestamp
+                                )
+                              }
                               className={`text-xl cursor-pointer text-accent`}
                             ></BsImage>
                           )}

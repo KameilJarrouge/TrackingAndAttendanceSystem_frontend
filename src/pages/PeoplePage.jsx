@@ -98,7 +98,7 @@ function PeoplePage() {
             left={
               <AppForm
                 initialValues={{
-                  identity: -2,
+                  identity: -1,
                   onCampus: -1,
                   recognize: -1,
                   tracked: -1,
@@ -217,7 +217,7 @@ function PeoplePage() {
                   <div className="flex justify-around text-xl text-primary ">
                     <AiFillCheckSquare
                       className={
-                        person.in_campus ? `text-green-500 ` : "text-font"
+                        person.on_campus ? `text-green-500 ` : "text-font"
                       }
                     />
                     <FiEye
@@ -286,6 +286,7 @@ function PeoplePage() {
             dataUrl={dataUrl}
             setData={setPeople}
             invoke={invoke}
+            logResult
           ></Pagination>
         </div>
       </div>

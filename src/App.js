@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Route, Routes, useNavigate } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
 import api from "./api/api";
@@ -31,6 +31,7 @@ import ProfessorDashboardPage from "./pages/ProfessorDashboard";
 import ProfessorUserSubjectsPage from "./pages/ProfessorUserSubjectsPage";
 import ProfessorUserAttendancePage from "./pages/ProfessorUserAttendancePage";
 import GivenSubjectStudentsAttendance from "./pages/GivenSubjectStudentsAttendance";
+import { initializeEcho } from "./components/InitializeEcho";
 
 function App() {
   const [user, setUser] = useState(() => {
@@ -48,6 +49,9 @@ function App() {
     }
     return <></>;
   }
+  useEffect(() => {
+    initializeEcho();
+  }, []);
 
   return (
     <UserContext.Provider value={{ user: user, setUser: setUser }}>
@@ -123,6 +127,18 @@ function App() {
               />
               <Route
                 path="my-attendance"
+                element={<ProfessorUserAttendancePage />}
+              />
+              <Route
+                path="attendance-warning"
+                element={<ProfessorUserAttendancePage />}
+              />
+              <Route
+                path="holidays"
+                element={<ProfessorUserAttendancePage />}
+              />
+              <Route
+                path="tracking-notifications"
                 element={<ProfessorUserAttendancePage />}
               />
               <Route

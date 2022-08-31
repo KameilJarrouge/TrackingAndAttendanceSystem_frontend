@@ -41,10 +41,10 @@ function SubjectDashboardModalRestart({
   const handleSubmit = async (values) => {
     if (parseInt(values.restart_duration) <= 0) return;
     if (givenSubjectId === 0) return;
-    let res = await api.put(
-      `/api/given-subjects/${givenSubjectId}/extend`,
-      values
-    );
+    let res = await api.put(`/api/given-subjects/${givenSubjectId}/restart`, {
+      restart_start_time: moment(values.restart_start_time).format("HH:mm:ss"),
+      restart_duration: values.restart_duration,
+    });
     if (res.data.status === "ok") {
       toast.success(res.data.message);
       onClose();
@@ -99,7 +99,7 @@ function SubjectDashboardModalRestart({
             <AppForm
               validationSchema={validationSchema}
               initialValues={{
-                restart_time: new Date(),
+                restart_start_time: new Date(),
                 restart_duration: 15,
               }}
               onSubmit={handleSubmit}
@@ -113,7 +113,7 @@ function SubjectDashboardModalRestart({
                       itemsPos="center"
                       title="التوقيت"
                       format="HH:mm"
-                      name={"restart_time"}
+                      name={"restart_start_time"}
                     ></AppFormDatePicker>
                   </div>{" "}
                   <div className="my-2 w-1/2 px-1">
@@ -139,7 +139,7 @@ function SubjectDashboardModalRestart({
                     textWidth="1/2"
                     dataWidth="1/2"
                     name={"restart_duration"}
-                    additionalName={"restart_time"}
+                    additionalName={"restart_start_time"}
                     renderFunc={(value, additionalValue = 0) =>
                       getTimeAsString(additionalValue, true, false, value)
                     }

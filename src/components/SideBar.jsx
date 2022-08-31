@@ -26,9 +26,26 @@ function SideBar() {
             title={"الكاميرات"}
             svg={"camera"}
           ></SideBarLink>
+
+          <SideBarLink
+            to="attendance-warning"
+            title={"إنذارات الحضور"}
+            svg={"warnings"}
+          ></SideBarLink>
+
+          <SideBarLink
+            to="tracking-notifications"
+            title={"إشعارات التعقب"}
+            svg={"tracking"}
+          ></SideBarLink>
         </>
       ) : (
         <>
+          <SideBarLink
+            to={`/${user.isAdmin === 0 ? "professor-" : ""}dashboard`}
+            title={"الرئيسية"}
+            svg={"home"}
+          ></SideBarLink>
           <SideBarLink
             to="my-subjects"
             title={"المقررات"}
