@@ -14,9 +14,12 @@ import { toast } from "react-toastify";
 import SemesterModalEdit from "../Modals/SemesterModalEdit";
 import { useNavigate } from "react-router-dom";
 import { getUser, setUser } from "../api/user";
+import ConfirmationModal from "../Modals/ConfirmationModal";
 function SemestersPage() {
   let navigate = useNavigate();
   let user = getUser();
+  const [confirmationModalIsOpen, setConfirmationModalIsOpen] = useState(false);
+  const [confirmationInfo, setConfirmationInfo] = useState("");
   const [modalIsOpen, setmodalIsOpen] = useState(false);
   const [editModalIsOpen, setEditModalIsOpen] = useState(false);
   const [selectedId, setSelectedId] = useState(0);
@@ -53,6 +56,17 @@ function SemestersPage() {
 
   return (
     <div className="py-6 px-14 h-[90vh] bg-background flex flex-col ">
+      <ConfirmationModal
+        open={confirmationModalIsOpen}
+        onClose={() => setConfirmationModalIsOpen(false)}
+        onConfirm={handleDelete}
+        data={selectedId}
+        title={"إزالة الفصل"}
+        titleInfo={confirmationInfo}
+        warningMessage={
+          "إزالة الفصل سيؤدي لحذف جميع السجلات الخاصة به. يرجى الانتباه أن هذه العملية لا يمكن التراجع عنها"
+        }
+      ></ConfirmationModal>
       <SemesterModalAdd
         open={modalIsOpen}
         onClose={() => setmodalIsOpen(false)}
@@ -104,7 +118,13 @@ function SemestersPage() {
                       className="hover:text-green-500 transition-all cursor-pointer"
                     ></BiEdit>
                     <MdDelete
-                      onClick={() => handleDelete(semester.id)}
+                      onClick={() => {
+                        setSelectedId(semester.id);
+                        setConfirmationModalIsOpen(true);
+                        setConfirmationInfo(
+                          semester.name_identifier + ": " + semester.year
+                        );
+                      }}
                       className="hover:text-red-500 transition-all cursor-pointer"
                     ></MdDelete>
                     <FaRegEye

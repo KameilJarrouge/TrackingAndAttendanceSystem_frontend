@@ -199,7 +199,11 @@ function PeopleModalEdit({ open, onClose, refresh, id }) {
                     {/* forbidden */}
                     <div className="w-1/3 flex">
                       <div className=" w-3/5 h-[2rem] rounded-r-md flex justify-center items-center bg-primary text-xl  text-font">
-                        <Tooltip message={"التعرف على الشخص"} visible nowrap>
+                        <Tooltip
+                          message={"الشخص ممنوع من دخول الحرم"}
+                          visible
+                          nowrap
+                        >
                           ممنوع
                         </Tooltip>
                       </div>

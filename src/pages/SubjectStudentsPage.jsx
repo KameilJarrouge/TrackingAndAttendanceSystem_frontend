@@ -18,11 +18,13 @@ import SubjectTakenModalEdit from "../Modals/SubjectTakenModalEdit";
 import StudentTakenModalAdd from "../Modals/StudentTakenModalAdd";
 import StudentTakenModalEdit from "../Modals/StudentTakenModalEdit";
 import LatestSemester from "../components/LatestSemester";
+import ConfirmationModal from "../Modals/ConfirmationModal";
 
 function SubjectStudentsPage() {
   let user = getUser();
   let { subjectId } = useParams();
-
+  const [confirmationModalIsOpen, setConfirmationModalIsOpen] = useState(false);
+  const [confirmationInfo, setConfirmationInfo] = useState("");
   const [dataUrl, setDataUrl] = useState(`/api/subjects/${subjectId}/students`);
   const [modalIsOpen, setmodalIsOpen] = useState(false);
   const [editModalIsOpen, setEditModalIsOpen] = useState(false);
@@ -57,6 +59,17 @@ function SubjectStudentsPage() {
 
   return (
     <div className="py-6 px-14 h-[90vh] bg-background flex flex-col ">
+      <ConfirmationModal
+        open={confirmationModalIsOpen}
+        onClose={() => setConfirmationModalIsOpen(false)}
+        onConfirm={handleDelete}
+        data={selectedId}
+        title={"إزالة الشخص"}
+        titleInfo={confirmationInfo}
+        warningMessage={
+          "إزالة الشخص سيؤدي لحذف جميع السجلات الخاصة به. يرجى الانتباه أن هذه العملية لا يمكن التراجع عنها"
+        }
+      ></ConfirmationModal>
       <StudentTakenModalAdd
         subjectId={subjectId}
         open={modalIsOpen}
@@ -143,7 +156,13 @@ function SubjectStudentsPage() {
                       className="hover:text-green-500 transition-all cursor-pointer"
                     ></BiEdit>
                     <MdDelete
-                      onClick={() => handleDelete(takenSubject.pivot.id)}
+                      onClick={() => {
+                        setSelectedId(takenSubject.pivot.id);
+                        setConfirmationModalIsOpen(true);
+                        setConfirmationInfo(
+                          subject.name + ":" + takenSubject.name
+                        );
+                      }}
                       className="hover:text-red-500 transition-all cursor-pointer"
                     ></MdDelete>
                   </div>

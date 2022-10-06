@@ -81,7 +81,7 @@ function SideBarLink({
         return (
           <MdChecklistRtl
             className={`w-[38px] h-[38px] ${
-              isActive ? "text-accent" : getColor()
+              isActive ? "text-accent" : getColor(false)
             }`}
           />
         );
@@ -89,7 +89,7 @@ function SideBarLink({
         return (
           <FiEye
             className={`w-[38px] h-[38px] ${
-              isActive ? "text-accent" : getColor()
+              isActive ? "text-accent" : getColor(false)
             }`}
             strokeWidth={1}
           />
@@ -100,18 +100,26 @@ function SideBarLink({
     }
   };
 
-  const getColor = () => {
+  const getColor = (withHover = true) => {
     if (promptedColor) {
       return promptedColor;
     } else {
-      return "text-font hover:text-background";
+      return "text-font" + (withHover ? "hover:text-background" : "");
     }
   };
   useEffect(() => {
     if (eventName) {
-      bindAction("reactChannel", eventName, (event) =>
-        setPromptedColor(event.color)
-      );
+      bindAction("reactChannel", eventName, (event) => {
+        console.log(event);
+        if (
+          event.color === "red" ||
+          (event.color === "blue" && promptedColor !== "red") ||
+          (event.color === "yellow" &&
+            (promptedColor !== "red" || promptedColor !== "blue"))
+        ) {
+          setPromptedColor("text-" + event.color + "-500");
+        }
+      });
     }
   }, []);
 

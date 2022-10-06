@@ -32,6 +32,9 @@ import ProfessorUserSubjectsPage from "./pages/ProfessorUserSubjectsPage";
 import ProfessorUserAttendancePage from "./pages/ProfessorUserAttendancePage";
 import GivenSubjectStudentsAttendance from "./pages/GivenSubjectStudentsAttendance";
 import { initializeEcho } from "./components/InitializeEcho";
+import HolidaysPage from "./pages/HolidaysPage";
+import AttendanceWarningsPage from "./pages/AttendanceWarningsPage";
+import TrackingNotificationsPage from "./pages/TrackingNotificationsPage";
 
 function App() {
   const [user, setUser] = useState(() => {
@@ -131,15 +134,12 @@ function App() {
               />
               <Route
                 path="attendance-warning"
-                element={<ProfessorUserAttendancePage />}
+                element={<AttendanceWarningsPage />}
               />
-              <Route
-                path="holidays"
-                element={<ProfessorUserAttendancePage />}
-              />
+              <Route path="holidays" element={<HolidaysPage />} />
               <Route
                 path="tracking-notifications"
-                element={<ProfessorUserAttendancePage />}
+                element={<TrackingNotificationsPage />}
               />
               <Route
                 path="my-subjects/:givenSubjectId/students-attendance/:isTheory"

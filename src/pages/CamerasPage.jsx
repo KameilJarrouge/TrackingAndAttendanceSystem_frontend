@@ -20,10 +20,13 @@ import { getCamTypeAsString } from "../components/form/getCamTypeAsString";
 import CameraModalAdd from "../Modals/CameraModalAdd";
 import CameraModalEdit from "../Modals/CameraModalEdit";
 import { TiDocumentText } from "react-icons/ti";
+import ConfirmationModal from "../Modals/ConfirmationModal";
 
 function CamerasPage() {
   let user = getUser();
   let navigate = useNavigate();
+  const [confirmationModalIsOpen, setConfirmationModalIsOpen] = useState(false);
+  const [confirmationInfo, setConfirmationInfo] = useState("");
   const [dataUrl, setDataUrl] = useState(`/api/cameras?identifier=&type=-1`);
   const [modalIsOpen, setmodalIsOpen] = useState(false);
   const [editModalIsOpen, setEditModalIsOpen] = useState(false);
@@ -65,6 +68,17 @@ function CamerasPage() {
 
   return (
     <div className="py-6 px-14 h-[90vh] bg-background flex flex-col ">
+      <ConfirmationModal
+        open={confirmationModalIsOpen}
+        onClose={() => setConfirmationModalIsOpen(false)}
+        onConfirm={handleDelete}
+        data={selectedId}
+        title={"إزالة الكاميرا"}
+        titleInfo={confirmationInfo}
+        warningMessage={
+          "إزالة الكاميرا سيؤدي لحذف جميع السجلات الخاصة بها. يرجى الانتباه أن هذه العملية لا يمكن التراجع عنها"
+        }
+      ></ConfirmationModal>
       <CameraModalAdd
         open={modalIsOpen}
         onClose={() => setmodalIsOpen(false)}
@@ -100,9 +114,9 @@ function CamerasPage() {
                     </div>
 
                     <div className="w-fit h-full flex items-center justify-start">
-                      <span className="text-font text-xl font-bold mx-2 w-fit">
+                      {/* <span className="text-font text-xl font-bold mx-2 w-fit">
                         نوع الموقع:
-                      </span>
+                      </span> */}
                       <div className="w-fit">
                         <AppFormRadioButton
                           border
@@ -173,7 +187,11 @@ function CamerasPage() {
                       className="hover:text-green-500 transition-all cursor-pointer"
                     ></BiEdit>
                     <MdDelete
-                      onClick={() => handleDelete(cam.id)}
+                      onClick={() => {
+                        setSelectedId(cam.id);
+                        setConfirmationModalIsOpen(true);
+                        setConfirmationInfo(cam.location);
+                      }}
                       className="hover:text-red-500 transition-all cursor-pointer"
                     ></MdDelete>
                   </div>

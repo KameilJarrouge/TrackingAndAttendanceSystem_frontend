@@ -30,7 +30,7 @@ function AppFormRadioButton({
     <div
       className={`flex flex-row 
           w-fit h-full items-center  ${
-            border && "border-[0.2px] border-font py-1"
+            border && "border-[0.2px] border-font py-1 rounded-lg"
           }  `}
     >
       {buttons.map((button, index) => (

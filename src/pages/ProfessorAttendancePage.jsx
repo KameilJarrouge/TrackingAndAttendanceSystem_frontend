@@ -21,7 +21,7 @@ function ProfessorAttendancePage() {
   let user = getUser();
   let { professorId } = useParams();
   let weekNumber =
-    Math.abs(moment(user.semester.semester_start).diff(moment(), "weeks")) + 1;
+    moment().diff(moment(user.semester.semester_start), "weeks") + 1;
   const [dataUrl, setDataUrl] = useState(
     `/api/professors/${professorId}/given-subjects`
   );
@@ -103,7 +103,7 @@ function ProfessorAttendancePage() {
                     <Tooltip
                       // background="background text-primary"
                       message={moment(user.semester.semester_start)
-                        .add(index * 7 - 1, "days")
+                        .add(index * 7, "days")
                         .format("yyyy-MM-DD")}
                       visible
                       textSize="xs"

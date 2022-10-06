@@ -30,7 +30,7 @@ function AccountModalAdd({ open, onClose, refresh }) {
     <AppModal
       closeModal={onClose}
       modalIsOpen={open}
-      className="rounded-lg fixed top-[20%] left-0 ml-auto h-auto  right-0 mr-auto w-96  bg-background  shadow-md shadow-black border-[2px] border-primary "
+      className={`rounded-lg fixed top-[20%] left-0 ml-auto h-auto  right-0 mr-auto w-96    bg-background  shadow-md shadow-black border-[2px] border-primary `}
     >
       <div className="w-full">
         <div className="w-full h-[3rem] ">

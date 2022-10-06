@@ -27,6 +27,7 @@ import { IoBookOutline } from "react-icons/io5";
 import { useNavigate } from "react-router-dom";
 import { Tooltip } from "../Modals/Tooltip";
 import { FiEye } from "react-icons/fi";
+import ConfirmationModal from "../Modals/ConfirmationModal";
 
 function PeoplePage() {
   let user = getUser();
@@ -34,6 +35,8 @@ function PeoplePage() {
   const [dataUrl, setDataUrl] = useState(
     `/api/people?identifier=&identity=-1&onCampus=-1&tracked=-1&blacklist=-1&recognize=-1`
   );
+  const [confirmationModalIsOpen, setConfirmationModalIsOpen] = useState(false);
+  const [confirmationInfo, setConfirmationInfo] = useState("");
   const [modalIsOpen, setmodalIsOpen] = useState(false);
   const [editModalIsOpen, setEditModalIsOpen] = useState(false);
   const [selectedId, setSelectedId] = useState(0);
@@ -81,6 +84,17 @@ function PeoplePage() {
 
   return (
     <div className="py-6 px-14 h-[90vh] bg-background flex flex-col ">
+      <ConfirmationModal
+        open={confirmationModalIsOpen}
+        onClose={() => setConfirmationModalIsOpen(false)}
+        onConfirm={handleDelete}
+        data={selectedId}
+        title={"إزالة الشخص"}
+        titleInfo={confirmationInfo}
+        warningMessage={
+          "إزالة الشخص سيؤدي لحذف جميع السجلات الخاصة به. يرجى الانتباه أن هذه العملية لا يمكن التراجع عنها"
+        }
+      ></ConfirmationModal>
       <PeopleModalAdd
         open={modalIsOpen}
         onClose={() => setmodalIsOpen(false)}
@@ -117,12 +131,13 @@ function PeoplePage() {
                       ></AppFormFieldHeader>
                     </div>
                   </div>
-                  <div className="w-[30%] h-full flex items-center justify-start">
-                    <span className="text-font text-xl font-bold mr-2 w-[20%]">
+                  <div className="w-[25%] h-full flex items-center justify-start">
+                    {/* <span className="text-font text-xl font-bold mr-2 w-[20%]">
                       الهوية:
-                    </span>
+                    </span> */}
                     <div className="w-[50%]">
                       <AppFormRadioButton
+                        border
                         name={"identity"}
                         buttons={[
                           { name: "طالب", value: 1 },
@@ -133,10 +148,10 @@ function PeoplePage() {
                       ></AppFormRadioButton>
                     </div>
                   </div>
-                  <div className="w-[30%] h-full flex items-center">
-                    <span className="text-font text-xl font-bold w-[30%]">
+                  <div className="w-[30%] h-full flex items-center justify-start">
+                    {/* <span className="text-font text-xl font-bold w-[30%]">
                       المعلومات:
-                    </span>
+                    </span> */}
                     <div className="w-[70%] flex">
                       <AppFormCheckBox2
                         className={"text-accent"}
@@ -243,7 +258,11 @@ function PeoplePage() {
                       className="hover:text-green-500 transition-all cursor-pointer"
                     ></BiEdit>
                     <MdDelete
-                      onClick={() => handleDelete(person.id)}
+                      onClick={() => {
+                        setSelectedId(person.id);
+                        setConfirmationModalIsOpen(true);
+                        setConfirmationInfo(person.name);
+                      }}
                       className="hover:text-red-500 transition-all cursor-pointer"
                     ></MdDelete>
                   </div>

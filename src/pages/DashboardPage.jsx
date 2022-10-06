@@ -26,15 +26,15 @@ function DashboardPage() {
   }, []);
 
   return (
-    <div className="py-14 px-14 h-[90vh] bg-background   ">
+    <div className="py-14 px-14 h-[90vh]    ">
       {/* main box */}
-      <div className="w-full h-full  flex justify-between border-[0.1px] border-primary">
+      <div className="w-full h-full  flex justify-between border-b-[0.1px] border-primary shadow-xl">
         {/* previous subjects */}
         <div
           onClick={() => setCurrentIsOpen(0)}
           className={`${
             currentIsOpen === 0 ? "w-[95%]" : "w-[5%]"
-          }   transition-all duration-200 overflow-x-hidden `}
+          }   transition-all duration-75 overflow-x-hidden `}
         >
           <SubjectsContainer
             refresh={getSubjects}

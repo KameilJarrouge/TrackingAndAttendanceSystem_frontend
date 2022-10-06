@@ -7,6 +7,7 @@ function SideBar() {
 
   return (
     <div className=" w-full flex flex-col items-start mt-8 overflow-x-hidden">
+      {/* <div className="w-full h-1 bg-accent mb-8"></div> */}
       {user.isAdmin === 1 ? (
         <>
           <SideBarLink
@@ -31,12 +32,14 @@ function SideBar() {
             to="attendance-warning"
             title={"إنذارات الحضور"}
             svg={"warnings"}
+            eventName="AttendanceCountEvent"
           ></SideBarLink>
 
           <SideBarLink
             to="tracking-notifications"
             title={"إشعارات التعقب"}
             svg={"tracking"}
+            eventName="LogEvent"
           ></SideBarLink>
         </>
       ) : (

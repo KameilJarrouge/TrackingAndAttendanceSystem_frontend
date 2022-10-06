@@ -22,10 +22,13 @@ import CameraModalEdit from "../Modals/CameraModalEdit";
 import { TiDocumentText } from "react-icons/ti";
 import AccountModalAdd from "../Modals/AccountModalAdd";
 import AccountModalEdit from "../Modals/AccountModalEdit";
+import ConfirmationModal from "../Modals/ConfirmationModal";
 
 function AccountsPage() {
   let user = getUser();
   let navigate = useNavigate();
+  const [confirmationModalIsOpen, setConfirmationModalIsOpen] = useState(false);
+  const [confirmationInfo, setConfirmationInfo] = useState("");
   const [dataUrl, setDataUrl] = useState(`/api/users?username=&isAdmin=-1`);
   const [modalIsOpen, setmodalIsOpen] = useState(false);
   const [editModalIsOpen, setEditModalIsOpen] = useState(false);
@@ -62,6 +65,17 @@ function AccountsPage() {
 
   return (
     <div className="py-6 px-14 h-[90vh] bg-background flex flex-col ">
+      <ConfirmationModal
+        open={confirmationModalIsOpen}
+        onClose={() => setConfirmationModalIsOpen(false)}
+        onConfirm={handleDelete}
+        data={selectedId}
+        title={"إزالة المستخدم"}
+        titleInfo={confirmationInfo}
+        warningMessage={
+          "إزالة المستخدم سيؤدي لحذف جميع السجلات الخاصة به. يرجى الانتباه أن هذه العملية لا يمكن التراجع عنها"
+        }
+      ></ConfirmationModal>
       <AccountModalAdd
         open={modalIsOpen}
         onClose={() => setmodalIsOpen(false)}
@@ -151,7 +165,11 @@ function AccountsPage() {
                       className="hover:text-green-500 transition-all cursor-pointer"
                     ></BiEdit>
                     <MdDelete
-                      onClick={() => handleDelete(user.id)}
+                      onClick={() => {
+                        setSelectedId(user.id);
+                        setConfirmationModalIsOpen(true);
+                        setConfirmationInfo(user.username);
+                      }}
                       className="hover:text-red-500 transition-all cursor-pointer"
                     ></MdDelete>
                   </div>

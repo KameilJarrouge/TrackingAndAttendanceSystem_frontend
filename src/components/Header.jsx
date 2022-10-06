@@ -87,7 +87,7 @@ function Header() {
               ></HeaderLink>
               <HeaderLink
                 to="holidays"
-                title={"الأعطال"}
+                title={"أيام العطل"}
                 svg={<MdDateRange />}
               ></HeaderLink>
             </>

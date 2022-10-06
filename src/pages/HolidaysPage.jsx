@@ -7,35 +7,36 @@ import { BiEdit } from "react-icons/bi";
 import api from "../api/api";
 import { toast } from "react-toastify";
 import { getUser } from "../api/user";
-import { MdChecklistRtl, MdDelete } from "react-icons/md";
+import { MdDelete, MdSchedule } from "react-icons/md";
 import PageHeaderWSearch from "../components/PageHeaderWSearch";
 import AppForm from "../components/form/AppForm";
+import AppFormRadioButton from "../components/form/AppFormRadioButton";
 import AppFormFieldHeader from "../components/form/AppFormFieldHeader";
 import SubmitSearch from "../components/form/SubmitSearch";
-import { RiExternalLinkLine } from "react-icons/ri";
-import SubjectModalAdd from "../Modals/SubjectModalAdd";
-import SubjectModalEdit from "../Modals/SubjectModalEdit";
+import PeopleModalAdd from "../Modals/PeopleModalAdd";
+import PeopleModalEdit from "../Modals/PeopleModelEdit";
 import { useNavigate } from "react-router-dom";
+import { getCamTypeAsString } from "../components/form/getCamTypeAsString";
+import CameraModalAdd from "../Modals/CameraModalAdd";
+import CameraModalEdit from "../Modals/CameraModalEdit";
+import { TiDocumentText } from "react-icons/ti";
+import HolidayModalAdd from "../Modals/HolidayModalAdd";
+import HolidayModalEdit from "../Modals/HolidayModalEdit";
 import ConfirmationModal from "../Modals/ConfirmationModal";
 
-function SubjectsPage() {
+function HolidaysPage() {
   let user = getUser();
-  let navigate = useNavigate();
   const [confirmationModalIsOpen, setConfirmationModalIsOpen] = useState(false);
   const [confirmationInfo, setConfirmationInfo] = useState("");
-  const [dataUrl, setDataUrl] = useState(`/api/subjects?identifier=`);
+  const [dataUrl, setDataUrl] = useState(`/api/holidays?scope=current&name=`);
   const [modalIsOpen, setmodalIsOpen] = useState(false);
   const [editModalIsOpen, setEditModalIsOpen] = useState(false);
   const [selectedId, setSelectedId] = useState(0);
   const [invoke, setInvoke] = useState(false);
-  const [subjects, setSubjects] = useState([]);
+  const [holidays, setHolidays] = useState([]);
 
-  const getSubjects = (values) => {
-    setDataUrl(
-      `/api/subjects?identifier=${
-        values.identifier === null ? "" : values.identifier
-      }`
-    );
+  const getCameras = (values) => {
+    setDataUrl(`/api/holidays?scope=${values.scope}&name=${values.name}`);
   };
 
   const refresh = () => {
@@ -48,27 +49,11 @@ function SubjectsPage() {
   };
 
   const handleDelete = async (id) => {
-    let res = await api.delete(`/api/subjects/${id}/delete`);
+    let res = await api.delete(`/api/holidays/${id}/delete`);
     if (res.data.status === "ok") {
       toast.success(res.data.message);
       refresh();
     }
-  };
-
-  const handleProfessorsNavigate = (subjectId) => {
-    navigate(`/subject/${subjectId}/professors`);
-  };
-
-  const handleStudentsNavigate = (subjectId) => {
-    navigate(`/subject/${subjectId}/students`);
-  };
-
-  const handleStudentAttendanceNavigate = (subjectId) => {
-    navigate(`/subject/${subjectId}/students/attendance`);
-  };
-
-  const handleProfessorAttendanceNavigate = (subjectId) => {
-    navigate(`/subject/${subjectId}/professors/attendance`);
   };
 
   return (
@@ -78,41 +63,60 @@ function SubjectsPage() {
         onClose={() => setConfirmationModalIsOpen(false)}
         onConfirm={handleDelete}
         data={selectedId}
-        title={"إزالة المقرر"}
+        title={"إزالة العطلة"}
         titleInfo={confirmationInfo}
-        warningMessage={
-          "إزالة المقرر سيؤدي لحذف جميع السجلات الخاصة به. يرجى الانتباه أن هذه العملية لا يمكن التراجع عنها"
-        }
+        warningMessage={"يرجى الانتباه أن هذه العملية لا يمكن التراجع عنها"}
       ></ConfirmationModal>
-      <SubjectModalAdd
+      <HolidayModalAdd
         open={modalIsOpen}
         onClose={() => setmodalIsOpen(false)}
         refresh={refresh}
-      ></SubjectModalAdd>
-      <SubjectModalEdit
+      ></HolidayModalAdd>
+      <HolidayModalEdit
         open={editModalIsOpen}
         onClose={() => setEditModalIsOpen(false)}
         refresh={refresh}
-        id={selectedId}
-      ></SubjectModalEdit>
+        holidayId={selectedId}
+      ></HolidayModalEdit>
       <div className="w-full h-[88%] flex flex-col ">
         <div className="w-full h-1/6 bg-black mb-2">
           <PageHeaderWSearch
             left={
               <AppForm
                 initialValues={{
-                  identifier: "",
+                  scope: "current",
+                  name: "",
                 }}
-                onSubmit={getSubjects}
+                onSubmit={getCameras}
                 // validationSchema={validationSchema}
               >
                 <div className="w-full h-full mx-4 flex items-center justify-between">
-                  <div className="w-[30%] h-full flex items-center">
-                    <div className="w-[90%] h-full">
-                      <AppFormFieldHeader
-                        name={"identifier"}
-                        placeholder="اسم المقرر أو الكلية"
-                      ></AppFormFieldHeader>
+                  <div className="w-[90%] flex justify-start items-center">
+                    <div className="w-[30%] h-full flex items-center">
+                      <div className="w-[90%] h-full">
+                        <AppFormFieldHeader
+                          name={"name"}
+                          placeholder="الاسم"
+                        ></AppFormFieldHeader>
+                      </div>
+                    </div>
+                    <div className="w-fit h-full flex items-center justify-start">
+                      <span className="text-font text-xl font-bold mx-2 w-fit">
+                        الأعطال:
+                      </span>
+                      <div className="w-fit">
+                        <AppFormRadioButton
+                          forced
+                          border
+                          name={"scope"}
+                          buttons={[
+                            { name: "السابقة", value: "passed" },
+                            { name: "الحالية", value: "current" },
+                            { name: "القادمة", value: "upcoming" },
+                            { name: "جميع الأعطال", value: "all" },
+                          ]}
+                        ></AppFormRadioButton>
+                      </div>
                     </div>
                   </div>
 
@@ -132,63 +136,33 @@ function SubjectsPage() {
           ></PageHeaderWSearch>
         </div>
 
-        <table className="w-full table-fixed">
+        <table className="w-full table-fixed ">
           <thead className="w-full">
             <tr className="w-full">
-              <THeader width={"[35%]"}>المقرر</THeader>
-              <THeader width={"[25%]"}> الكلية</THeader>
-              <THeader width={"[13%]"}> المدرسين</THeader>
-              <THeader width={"[13%]"}> الطلاب</THeader>
-              <THeader width={"[14%]"}>تحكم</THeader>
+              <THeader width={"3/6"}>الاسم </THeader>
+              <THeader width={"1/6"}> تاريخ البداية</THeader>
+              <THeader width={"1/6"}> تاريخ النهاية</THeader>
+              <THeader width={"1/6"}> تحكم</THeader>
             </tr>
           </thead>
           <tbody>
-            {subjects.map((subject) => (
-              <tr key={subject.id}>
-                <TCell>{subject.name}</TCell>
-                <TCell>{subject.department}</TCell>
-                <TCell>
-                  {/* professors */}
-                  <div className="flex justify-around text-xl text-primary ">
-                    <RiExternalLinkLine
-                      onClick={() => handleProfessorsNavigate(subject.id)}
-                      className="hover:text-blue-500 transition-all cursor-pointer"
-                    ></RiExternalLinkLine>
-                    <MdChecklistRtl
-                      onClick={() =>
-                        handleProfessorAttendanceNavigate(subject.id)
-                      }
-                      className="hover:text-green-500 transition-all cursor-pointer"
-                    />
-                  </div>
-                </TCell>
-                <TCell>
-                  {/* students */}
-                  <div className="flex justify-around text-xl text-primary ">
-                    <RiExternalLinkLine
-                      onClick={() => handleStudentsNavigate(subject.id)}
-                      className="hover:text-blue-500 transition-all cursor-pointer"
-                    ></RiExternalLinkLine>
-                    <MdChecklistRtl
-                      onClick={() =>
-                        handleStudentAttendanceNavigate(subject.id)
-                      }
-                      className="hover:text-green-500 transition-all cursor-pointer"
-                    />
-                  </div>
-                </TCell>
+            {holidays.map((holiday) => (
+              <tr key={holiday.id}>
+                <TCell>{holiday.name}</TCell>
+                <TCell>{holiday.start}</TCell>
+                <TCell>{holiday.end}</TCell>
                 {/* control */}
                 <TCell>
                   <div className="flex justify-around text-xl text-primary ">
                     <BiEdit
-                      onClick={() => handleOpenEditModal(subject.id)}
+                      onClick={() => handleOpenEditModal(holiday.id)}
                       className="hover:text-green-500 transition-all cursor-pointer"
                     ></BiEdit>
                     <MdDelete
                       onClick={() => {
-                        setSelectedId(subject.id);
+                        setSelectedId(holiday.id);
                         setConfirmationModalIsOpen(true);
-                        setConfirmationInfo(subject.name);
+                        setConfirmationInfo(holiday.name);
                       }}
                       className="hover:text-red-500 transition-all cursor-pointer"
                     ></MdDelete>
@@ -203,7 +177,7 @@ function SubjectsPage() {
         <div className="w-1/6 ">
           <Pagination
             dataUrl={dataUrl}
-            setData={setSubjects}
+            setData={setHolidays}
             invoke={invoke}
           ></Pagination>
         </div>
@@ -212,4 +186,4 @@ function SubjectsPage() {
   );
 }
 
-export default SubjectsPage;
+export default HolidaysPage;

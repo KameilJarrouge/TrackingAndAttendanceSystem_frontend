@@ -8,6 +8,7 @@ import api from "../api/api";
 import { toast } from "react-toastify";
 import { getUser } from "../api/user";
 import { MdChecklistRtl, MdDelete } from "react-icons/md";
+import ConfirmationModal from "../Modals/ConfirmationModal";
 
 import PageHeader from "../components/PageHeader";
 import { useParams } from "react-router-dom";
@@ -24,6 +25,8 @@ function ProfessorSubjectsPage() {
   const [dataUrl, setDataUrl] = useState(
     `/api/professors/${professorId}/subjects`
   );
+  const [confirmationModalIsOpen, setConfirmationModalIsOpen] = useState(false);
+  const [confirmationInfo, setConfirmationInfo] = useState("");
   const [modalIsOpen, setmodalIsOpen] = useState(false);
   const [editModalIsOpen, setEditModalIsOpen] = useState(false);
   const [selectedId, setSelectedId] = useState(0);
@@ -57,6 +60,17 @@ function ProfessorSubjectsPage() {
 
   return (
     <div className="py-6 px-14 h-[90vh] bg-background flex flex-col ">
+      <ConfirmationModal
+        open={confirmationModalIsOpen}
+        onClose={() => setConfirmationModalIsOpen(false)}
+        onConfirm={handleDelete}
+        data={selectedId}
+        title={"إزالة الربط"}
+        titleInfo={confirmationInfo}
+        warningMessage={
+          "إزالة الربط بين المدرس والمقرر سيؤدي لحذف جميع السجلات الخاصة بهذا الربط. يرجى الانتباه أن هذه العملية لا يمكن التراجع عنها"
+        }
+      ></ConfirmationModal>
       <SubjectGivenModalAdd
         open={modalIsOpen}
         onClose={() => setmodalIsOpen(false)}
@@ -142,7 +156,13 @@ function ProfessorSubjectsPage() {
                       className="hover:text-green-500 transition-all cursor-pointer"
                     ></BiEdit>
                     <MdDelete
-                      onClick={() => handleDelete(givenSubject.id)}
+                      onClick={() => {
+                        setSelectedId(givenSubject.id);
+                        setConfirmationModalIsOpen(true);
+                        setConfirmationInfo(
+                          givenSubject.subject.name + " : " + professor.name
+                        );
+                      }}
                       className="hover:text-red-500 transition-all cursor-pointer"
                     ></MdDelete>
                   </div>

@@ -23,6 +23,7 @@ import SubjectDashboardModalExtend from "../Modals/SubjectDashboardModalExtend";
 import { getUser } from "../api/user";
 import { useNavigate } from "react-router-dom";
 import api from "../api/api";
+import { toast } from "react-toastify";
 
 function SubjectsContainer({
   withControl = true,
@@ -61,10 +62,14 @@ function SubjectsContainer({
     }
   }, [filter, subjects]);
 
-  const handleSkipping = (id, skipped = false) => {
-    let res = api.put(
+  const handleSkipping = async (id, skipped = false) => {
+    let res = await api.put(
       `/api/given-subjects/${id}/${skipped ? "un" : ""}skip-this-week`
     );
+    if (res.data.status === "ok") {
+      toast.success(res.data.message);
+      refresh();
+    }
   };
 
   return (
