@@ -147,6 +147,7 @@ function AccountsPage() {
             <tr className="w-full">
               <THeader width={"2/6"}>اسم المستخدم</THeader>
               <THeader width={"1/6"}> نوع المستخدم</THeader>
+              <THeader width={"1/6"}> اسم المدرس</THeader>
               {/* السجل والمقررات بالروابط */}
               <THeader width={"1/6"}> تحكم</THeader>
             </tr>
@@ -156,6 +157,7 @@ function AccountsPage() {
               <tr key={user.id}>
                 <TCell>{user.username}</TCell>
                 <TCell>{user.isAdmin ? "أدمن" : "مدرس"}</TCell>
+                <TCell>{user.professor?.name || "--"}</TCell>
 
                 {/* control */}
                 <TCell>
@@ -185,6 +187,7 @@ function AccountsPage() {
             dataUrl={dataUrl}
             setData={setUsers}
             invoke={invoke}
+            logResult
           ></Pagination>
         </div>
       </div>

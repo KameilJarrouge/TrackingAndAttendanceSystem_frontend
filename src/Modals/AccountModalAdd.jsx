@@ -8,16 +8,27 @@ import SubmitButton from "../components/form/SubmitButton";
 import api from "../api/api";
 import { toast } from "react-toastify";
 import AppFormRadioButton from "../components/form/AppFormRadioButton";
+import { Autocomplete, TextField } from "@mui/material";
+import { useFormikContext } from "formik";
 const validationSchema = Yup.object().shape({
   username: Yup.string().required("يرجى إدخال اسم المستخدم"),
   password: Yup.string().required("يرجى إدخال كلمة المرور"),
 });
 function AccountModalAdd({ open, onClose, refresh }) {
+  const [professor, setProfessor] = useState(null);
+  const [professorOptions, setProfessorOptions] = useState([]);
+  const [professorInputValue, setProfessorInputValue] = useState("");
+  const [openAutoComplete, setOpenAutoComplete] = useState(false);
   const handlesubmit = async (values) => {
+    if (values.isAdmin === 0 && professor === null) {
+      toast.error("يرجى اختيار مدرس");
+      return;
+    }
     const res = await api.post(`/api/users/add`, {
       username: values?.username,
       password: values?.password,
       isAdmin: values?.isAdmin,
+      prof_id: professor.id,
     });
     if (res.data.status === "ok") {
       toast.success(res.data.message);
@@ -25,6 +36,21 @@ function AccountModalAdd({ open, onClose, refresh }) {
       refresh();
     }
   };
+  const handleChoosingProf = (value) => {
+    if (value === 0) {
+      setOpenAutoComplete(true);
+    } else {
+      setOpenAutoComplete(false);
+    }
+  };
+  const getProfessorOptions = async () => {
+    let res = await api.get("/api/professors/userable-professors");
+    setProfessorOptions(res.data);
+  };
+
+  useEffect(() => {
+    getProfessorOptions();
+  }, [open]);
 
   return (
     <AppModal
@@ -63,8 +89,9 @@ function AccountModalAdd({ open, onClose, refresh }) {
                 type="password"
                 placeholder=""
               ></AppFormField>
-              <div className="w-full flex justify-center items-center">
+              <div className="w-full flex justify-center items-center mb-5">
                 <AppFormRadioButton
+                  afterClick={handleChoosingProf}
                   minWidth="min-w-[60px]"
                   fillBackground
                   forced
@@ -75,6 +102,51 @@ function AccountModalAdd({ open, onClose, refresh }) {
                   ]}
                 ></AppFormRadioButton>
               </div>
+              {openAutoComplete && (
+                <Autocomplete
+                  isOptionEqualToValue={(option1, option2) => {
+                    return option1.name === option2.name;
+                  }}
+                  getOptionLabel={(option) => `${option?.name}`}
+                  renderOption={(props, option, state) => {
+                    return (
+                      <div
+                        {...props}
+                        dir="rtl"
+                        className="self-center border-[2px] my-1 text-2xl  px-4 mx-1 rounded-lg   flex justify-between items-center cursor-pointer
+                      hover:text-white hover:bg-primary_dark transition-all border-primary_light text-font bg-primary_light"
+                      >
+                        <div>{option.name}</div>
+                      </div>
+                    );
+                  }}
+                  value={professor}
+                  onChange={(event, newValue) => {
+                    setProfessor(newValue);
+                  }}
+                  inputValue={professorInputValue}
+                  onInputChange={(event, newInputValue) => {
+                    setProfessorInputValue(newInputValue);
+                  }}
+                  dir="ltr"
+                  className="border-primary border-[1px] bg-input rounded-md w-full self-center my-1 text-right text-primary text-3xl "
+                  disablePortal
+                  id="combo-box-demo"
+                  options={professorOptions}
+                  renderInput={(params) => {
+                    params.value = professor?.name || "";
+                    return (
+                      <TextField
+                        {...params}
+                        // label="اسم المادة"
+                        placeholder="المدرس"
+                        dir="rtl"
+                        className="text-right border-primary text-3xl text-primary"
+                      />
+                    );
+                  }}
+                />
+              )}
             </div>
 
             <div

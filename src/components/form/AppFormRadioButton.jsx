@@ -14,8 +14,10 @@ function AppFormRadioButton({
     { name: "test2", value: 2 },
     { name: "test3", value: 3 },
   ],
+  afterClick = (f) => f,
 }) {
   const { values, setFieldValue } = useFormikContext();
+  afterClick(values[name]);
   const handleClick = (value) => {
     if (!editable) return;
     if (values[name] === value) {
@@ -25,6 +27,7 @@ function AppFormRadioButton({
     } else {
       setFieldValue(name, value);
     }
+    afterClick(value);
   };
   return (
     <div
