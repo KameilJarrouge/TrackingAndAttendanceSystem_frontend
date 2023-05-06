@@ -198,7 +198,13 @@ function SubjectsContainer({
                             className="cursor-pointer hover:text-accent transition-all"
                             onClick={() => {
                               navigate(
-                                `/my-subjects/${givenSubject.id}/students-attendance`
+                                `/my-subjects/${
+                                  givenSubject.id
+                                }/students-attendance/${
+                                  givenSubject.is_theory === 1
+                                    ? "true"
+                                    : "false"
+                                }`
                               );
                             }}
                           />

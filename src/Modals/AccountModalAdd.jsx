@@ -28,7 +28,7 @@ function AccountModalAdd({ open, onClose, refresh }) {
       username: values?.username,
       password: values?.password,
       isAdmin: values?.isAdmin,
-      prof_id: professor.id,
+      prof_id: professor?.id || "-1",
     });
     if (res.data.status === "ok") {
       toast.success(res.data.message);

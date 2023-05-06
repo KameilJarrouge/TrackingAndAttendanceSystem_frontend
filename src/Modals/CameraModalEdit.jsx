@@ -90,6 +90,7 @@ function CameraModalEdit({ open, onClose, refresh, camId }) {
                   نوع الموقع
                 </div>
                 <AppFormRadioButton
+                  forced
                   buttons={[
                     { name: "حرم", value: 3 },
                     { name: "مخرج", value: 2 },
